@@ -1,18 +1,22 @@
 const cfg = window.RUSTICANDO_CONFIG || {};
 const $ = id => document.getElementById(id);
 const BUCKET = 'productos';
-const CATEGORIES = { ratona: 'Mesa ratona', barra: 'Barra · mesada', rack: 'Rack TV', mesa: 'Mesa', otro: 'Otro' };
+const CATEGORIES = { ratona: 'Mesa ratona', barra: 'Barra o mesada', rack: 'Rack de TV', mesa: 'Mesa', otro: 'Otra cosa' };
 const MAX_VIDEO = 25 * 1024 * 1024;
-
 const show = (id, on = true) => { $(id).hidden = !on; };
-function message(id, text, kind = 'err') {
-  const el = $(id);
-  el.textContent = text;
-  el.className = `msg ${kind}${id === 'form-msg' ? ' full' : ''}`;
-  el.hidden = !text;
-}
 // Paths saved as img/... live in the site itself, one folder up from /admin
 const mediaUrl = u => !u ? '' : /^https:\/\//.test(u) ? u : '../' + u;
+
+let toastTimer;
+function toast(text, kind = 'ok') {
+  const t = $('toast');
+  t.textContent = text;
+  t.className = `toast ${kind}`;
+  t.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.hidden = true; }, kind === 'ok' ? 3500 : 6000);
+}
+function fieldError(id, text) { $(id).textContent = text; $(id).hidden = !text; }
 
 if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.supabase) {
   show('setup');
@@ -21,7 +25,8 @@ if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.supabase) {
 const sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
 
 let pieces = [];
-let editing = null;   // piece being edited, or null for a new one
+let editing = null;      // piece being edited, or null for a new one
+let category = 'ratona';
 
 // ---------- Session ----------
 async function start() {
@@ -31,178 +36,216 @@ async function start() {
 
 $('login-form').addEventListener('submit', async e => {
   e.preventDefault();
-  message('login-msg', '');
+  fieldError('login-msg', '');
   $('login-btn').disabled = true;
-  const { error } = await sb.auth.signInWithPassword({ email: $('email').value.trim(), password: $('password').value });
+  const { error } = await sb.auth.signInWithPassword({ email: window.rusticandoLoginEmail($('user').value), password: $('password').value });
   $('login-btn').disabled = false;
   $('password').value = '';
-  if (error) {
-    message('login-msg', /rate|too many/i.test(error.message)
-      ? 'Demasiados intentos. Esperá unos minutos y probá de nuevo.'
-      : 'El correo o la contraseña no son correctos.');
-    return;
-  }
+  if (error) return fieldError('login-msg', /rate|too many/i.test(error.message) ? 'Demasiados intentos. Esperá unos minutos y probá de nuevo.' : 'Usuario o contraseña incorrectos.');
   await enter();
 });
 
-$('logout').addEventListener('click', async () => {
-  await sb.auth.signOut();
-  location.reload();
-});
+$('logout').addEventListener('click', async () => { await sb.auth.signOut(); location.href = '../'; });
 
 async function enter() {
   const { data: isAdmin, error } = await sb.rpc('is_admin');
   if (error || !isAdmin) {
     await sb.auth.signOut();
     show('login');
-    message('login-msg', 'Esta cuenta no tiene permiso para editar el catálogo.');
-    return;
+    return fieldError('login-msg', 'Esta cuenta no tiene permiso para editar el catálogo.');
   }
-  show('login', false); show('dash'); show('logout');
+  show('login', false); show('home'); show('logout');
   await loadPieces();
 }
 
 // ---------- List ----------
 async function loadPieces() {
   const { data, error } = await sb.from('products').select('*').order('sort').order('created_at', { ascending: false });
-  if (error) { message('dash-msg', 'No se pudo cargar el catálogo. Revisá la conexión y recargá la página.'); return; }
+  if (error) return toast('No se pudo cargar el catálogo. Recargá la página.', 'err');
   pieces = data;
   renderList();
+}
+
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  return e;
+}
+function btn(text, cls, onClick) {
+  const b = el('button', 'btn ' + cls, text);
+  b.type = 'button';
+  b.addEventListener('click', onClick);
+  return b;
 }
 
 function renderList() {
   const list = $('list');
   list.replaceChildren();
-  if (!pieces.length) {
-    const p = document.createElement('p');
-    p.textContent = 'Todavía no hay piezas. Tocá "+ Nueva pieza" para cargar la primera.';
-    list.append(p);
-    return;
-  }
-  for (const piece of pieces) {
-    const row = document.createElement('div');
-    row.className = 'row' + (piece.visible ? '' : ' off');
+  const visible = pieces.filter(p => p.visible).length, hidden = pieces.length - visible;
+  $('count').textContent = pieces.length
+    ? `${visible} a la vista${hidden ? ` · ${hidden} ${hidden === 1 ? 'oculta' : 'ocultas'}` : ''}. Usá las flechas para cambiar el orden.`
+    : 'Todavía no hay piezas. Subí la primera con el botón verde.';
 
-    const img = document.createElement('img');
-    img.className = 'thumb'; img.alt = ''; img.loading = 'lazy';
-    if (piece.image_url) img.src = mediaUrl(piece.image_url);
+  pieces.forEach((p, idx) => {
+    const card = el('article', 'piece' + (p.visible ? '' : ' off'));
+    const pic = el('div', 'pic');
+    const img = el('img');
+    img.alt = ''; img.loading = 'lazy';
+    if (p.image_url) img.src = mediaUrl(p.image_url);
+    const tags = el('div', 'tagline');
+    if (!p.visible) tags.append(el('span', 'chip-s warn', 'Oculta'));
+    if (p.video_url) tags.append(el('span', 'chip-s', 'Video'));
+    pic.append(img, tags);
 
-    const info = document.createElement('div');
-    const h = document.createElement('h3');
-    h.textContent = piece.name;
-    if (piece.video_url) { const b = document.createElement('span'); b.className = 'badge'; b.textContent = 'Video'; h.append(b); }
-    if (!piece.visible) { const b = document.createElement('span'); b.className = 'badge'; b.textContent = 'Oculta'; h.append(b); }
-    const meta = document.createElement('div');
-    meta.className = 'meta';
-    meta.textContent = [CATEGORIES[piece.category] || 'Otro', piece.wood, piece.size, piece.price].filter(Boolean).join(' · ');
-    info.append(h, meta);
+    const body = el('div', 'body');
+    body.append(el('h3', null, p.name), el('div', 'sub', [CATEGORIES[p.category] || 'Otra cosa', p.price].filter(Boolean).join(' · ')));
 
-    const acts = document.createElement('div');
-    acts.className = 'acts';
+    const move = el('div', 'move');
+    const up = btn('↑ Subir', 'light', () => swap(idx, idx - 1));
+    const down = btn('↓ Bajar', 'light', () => swap(idx, idx + 1));
+    up.disabled = idx === 0; down.disabled = idx === pieces.length - 1;
+    move.append(up, down);
+
+    const acts = el('div', 'acts');
     acts.append(
-      button(piece.visible ? 'Ocultar' : 'Mostrar', 'ghost small', () => toggleVisible(piece)),
-      button('Editar', 'small', () => openEditor(piece)),
-      deleteButton(piece)
+      btn('Editar', '', () => openEditor(p)),
+      btn(p.visible ? 'Ocultar' : 'Mostrar', 'light', () => toggleVisible(p))
     );
-    row.append(img, info, acts);
-    list.append(row);
+    const del = btn('Borrar', 'light', () => {
+      const box = el('div', 'confirm');
+      box.append(el('p', null, `¿Borrar "${p.name}" para siempre?`),
+        btn('Sí, borrar', 'danger', () => removePiece(p)),
+        btn('No', 'light', () => box.replaceWith(del)));
+      del.replaceWith(box);
+    });
+    del.style.gridColumn = '1 / -1';
+    acts.append(del);
+
+    body.append(move, acts);
+    card.append(pic, body);
+    list.append(card);
+  });
+}
+
+// Reordering swaps the two pieces' positions, then renumbers everyone 10, 20, 30…
+async function swap(a, b) {
+  if (b < 0 || b >= pieces.length) return;
+  [pieces[a], pieces[b]] = [pieces[b], pieces[a]];
+  renderList();
+  const updates = pieces.map((p, i) => ({ id: p.id, sort: (i + 1) * 10 })).filter((u, i) => pieces[i].sort !== u.sort);
+  pieces.forEach((p, i) => { p.sort = (i + 1) * 10; });
+  for (const u of updates) {
+    const { error } = await sb.from('products').update({ sort: u.sort }).eq('id', u.id);
+    if (error) { toast('No se pudo guardar el orden.', 'err'); return loadPieces(); }
   }
+  toast('Orden guardado.');
 }
 
-function button(text, cls, onClick) {
-  const b = document.createElement('button');
-  b.type = 'button'; b.className = 'btn ' + cls; b.textContent = text;
-  b.addEventListener('click', onClick);
-  return b;
-}
-
-// Delete asks for confirmation in place, without browser dialogs
-function deleteButton(piece) {
-  const wrap = document.createElement('span');
-  wrap.style.display = 'contents';
-  const ask = button('Borrar', 'ghost small', () => { ask.hidden = true; yes.hidden = no.hidden = false; });
-  const yes = button('¿Borrar? Sí', 'danger small', () => removePiece(piece, yes));
-  const no = button('No', 'ghost small', () => { ask.hidden = false; yes.hidden = no.hidden = true; });
-  yes.hidden = no.hidden = true;
-  wrap.append(ask, yes, no);
-  return wrap;
-}
-
-async function toggleVisible(piece) {
-  const { error } = await sb.from('products').update({ visible: !piece.visible }).eq('id', piece.id);
-  if (error) return message('dash-msg', 'No se pudo cambiar la visibilidad.');
-  message('dash-msg', piece.visible ? `"${piece.name}" ya no se muestra en la web.` : `"${piece.name}" ya se muestra en la web.`, 'ok');
+async function toggleVisible(p) {
+  const { error } = await sb.from('products').update({ visible: !p.visible }).eq('id', p.id);
+  if (error) return toast('No se pudo cambiar.', 'err');
+  toast(p.visible ? `"${p.name}" ya no se ve en la web.` : `"${p.name}" ya se ve en la web.`);
   await loadPieces();
 }
 
-async function removePiece(piece, btn) {
-  btn.disabled = true;
-  const { error } = await sb.from('products').delete().eq('id', piece.id);
-  if (error) { btn.disabled = false; return message('dash-msg', 'No se pudo borrar la pieza.'); }
-  await removeFiles([piece.image_url, piece.video_url]);
-  message('dash-msg', `"${piece.name}" se borró.`, 'ok');
+async function removePiece(p) {
+  const { error } = await sb.from('products').delete().eq('id', p.id);
+  if (error) return toast('No se pudo borrar.', 'err');
+  await removeFiles([p.image_url, p.video_url]);
+  toast(`"${p.name}" se borró.`);
   await loadPieces();
 }
 
 // ---------- Editor ----------
-const fields = ['name', 'category', 'wood', 'thickness', 'size', 'detail', 'price', 'sort'];
+const extra = ['wood', 'thickness', 'size', 'detail', 'price'];
 
 $('new-btn').addEventListener('click', () => openEditor(null));
 $('cancel-btn').addEventListener('click', closeEditor);
 
-function openEditor(piece) {
-  editing = piece;
+$('tiles').addEventListener('click', e => {
+  const t = e.target.closest('.tile');
+  if (!t) return;
+  const prevLabel = CATEGORIES[category];
+  setCategory(t.dataset.c);
+  // Suggest a name the first time, or if it still is the previous suggestion
+  if (!$('f-name').value.trim() || $('f-name').value === prevLabel) $('f-name').value = t.dataset.c === 'otro' ? '' : CATEGORIES[t.dataset.c];
+  $('f-name').focus();
+});
+function setCategory(c) {
+  category = c in CATEGORIES ? c : 'otro';
+  document.querySelectorAll('.tile').forEach(t => t.setAttribute('aria-pressed', t.dataset.c === category));
+}
+
+// Quick-fill chips (Ciprés, 2", Borde vivo…)
+document.querySelectorAll('.quick').forEach(q => q.addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') return;
+  e.preventDefault();
+  $(q.dataset.for).value = e.target.textContent;
+}));
+
+function openEditor(p) {
+  editing = p;
   $('piece-form').reset();
-  message('form-msg', '');
-  $('editor-title').textContent = piece ? 'Editar pieza' : 'Nueva pieza';
-  for (const f of fields) $('f-' + f).value = piece ? (piece[f] ?? '') : (f === 'sort' ? 100 : f === 'category' ? 'ratona' : '');
-  $('f-visible').checked = piece ? piece.visible : true;
-  renderPreview(piece ? mediaUrl(piece.image_url) : '', piece ? mediaUrl(piece.video_url) : '');
+  fieldError('form-msg', '');
+  $('editor-title').textContent = p ? 'Editar pieza' : 'Pieza nueva';
+  $('save-btn').textContent = p ? 'Guardar cambios' : 'Publicar en la web';
+  $('f-name').value = p ? p.name : '';
+  for (const f of extra) $('f-' + f).value = p ? (p[f] ?? '') : '';
+  $('f-visible').checked = p ? p.visible : true;
+  setCategory(p ? p.category : 'ratona');
+  $('more').open = !!(p && extra.some(f => p[f]));
+  setPhoto(p ? mediaUrl(p.image_url) : '');
+  show('new-btn', false);
   show('editor');
   $('editor').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  $('f-name').focus({ preventScroll: true });
 }
 
 function closeEditor() {
   editing = null;
   show('editor', false);
+  show('new-btn');
 }
 
-function renderPreview(imgSrc, videoSrc) {
-  const box = $('preview');
-  box.replaceChildren();
-  if (imgSrc) { const i = document.createElement('img'); i.src = imgSrc; i.alt = 'Foto'; box.append(i); }
-  if (videoSrc) { const v = document.createElement('video'); v.src = videoSrc; v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true; box.append(v); }
+function setPhoto(src) {
+  const drop = $('drop');
+  drop.querySelector('img')?.remove();
+  $('drop-ph').hidden = !!src;
+  if (src) { const i = el('img'); i.src = src; i.alt = 'Foto elegida'; drop.append(i); }
 }
 
 $('f-image').addEventListener('change', () => {
   const f = $('f-image').files[0];
-  if (f) renderPreview(URL.createObjectURL(f), $('f-video').files[0] ? URL.createObjectURL($('f-video').files[0]) : mediaUrl(editing?.video_url));
+  if (f) setPhoto(URL.createObjectURL(f));
 });
 $('f-video').addEventListener('change', () => {
   const f = $('f-video').files[0];
-  if (f && f.size > MAX_VIDEO) { message('form-msg', 'El video pesa más de 25 MB. Recortalo o bajale la calidad.'); $('f-video').value = ''; return; }
-  if (f) renderPreview($('f-image').files[0] ? URL.createObjectURL($('f-image').files[0]) : mediaUrl(editing?.image_url), URL.createObjectURL(f));
+  if (f && f.size > MAX_VIDEO) { fieldError('form-msg', 'El video pesa más de 25 MB. Recortalo o mandalo en menor calidad.'); $('f-video').value = ''; }
 });
 
 $('piece-form').addEventListener('submit', async e => {
   e.preventDefault();
-  message('form-msg', '');
+  fieldError('form-msg', '');
   const imageFile = $('f-image').files[0];
   const videoFile = $('f-video').files[0];
-  if (!editing && !imageFile) return message('form-msg', 'Agregá una foto de la pieza.');
+  if (!editing && !imageFile) { fieldError('form-msg', 'Falta la foto (paso 1).'); $('drop').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+  if (!$('f-name').value.trim()) { fieldError('form-msg', 'Falta el nombre (paso 3).'); $('f-name').focus(); return; }
 
-  $('save-btn').disabled = true;
-  $('save-btn').textContent = 'Guardando…';
+  const save = $('save-btn');
+  save.disabled = true;
+  save.textContent = imageFile || videoFile ? 'Subiendo…' : 'Guardando…';
   try {
-    const row = { visible: $('f-visible').checked };
-    for (const f of fields) {
-      const v = $('f-' + f).value.trim();
-      row[f] = f === 'sort' ? (parseInt(v, 10) || 100) : (v || null);
-    }
+    const row = { name: $('f-name').value.trim(), category, visible: $('f-visible').checked };
+    for (const f of extra) row[f] = $('f-' + f).value.trim() || null;
+    if (!editing) row.sort = (pieces.length ? Math.min(...pieces.map(p => p.sort)) : 100) - 10;  // new pieces go first
+
     const oldFiles = [];
     if (imageFile) { row.image_url = await upload(await shrinkImage(imageFile), 'jpg', 'image/jpeg'); if (editing) oldFiles.push(editing.image_url); }
-    if (videoFile) { row.video_url = await upload(videoFile, 'mp4', 'video/mp4'); if (editing) oldFiles.push(editing.video_url); }
+    if (videoFile) {
+      const isMov = videoFile.type === 'video/quicktime';
+      row.video_url = await upload(videoFile, isMov ? 'mov' : 'mp4', isMov ? 'video/quicktime' : 'video/mp4');
+      if (editing) oldFiles.push(editing.video_url);
+    }
 
     const { error } = editing
       ? await sb.from('products').update(row).eq('id', editing.id)
@@ -210,20 +253,19 @@ $('piece-form').addEventListener('submit', async e => {
     if (error) throw error;
     await removeFiles(oldFiles);
 
-    message('dash-msg', `"${row.name}" se guardó y ya está en la web.`, 'ok');
+    toast(editing ? `"${row.name}" se actualizó.` : `¡Listo! "${row.name}" ya está en la web.`);
     closeEditor();
     await loadPieces();
-    $('dash-msg').scrollIntoView({ behavior: 'smooth' });
   } catch (err) {
     console.error(err);
-    message('form-msg', 'No se pudo guardar. Revisá la conexión e intentá de nuevo.');
+    fieldError('form-msg', 'No se pudo guardar. Revisá la conexión a internet e intentá de nuevo.');
   } finally {
-    $('save-btn').disabled = false;
-    $('save-btn').textContent = 'Guardar';
+    save.disabled = false;
+    save.textContent = editing ? 'Guardar cambios' : 'Publicar en la web';
   }
 });
 
-// Photos from the phone can be 5–10 MB; resize to 1600 px and re-encode as JPEG (also strips GPS metadata)
+// Phone photos can be 5–10 MB; resize to 1600 px and re-encode as JPEG (also strips GPS metadata)
 async function shrinkImage(file) {
   const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' });
   const scale = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));

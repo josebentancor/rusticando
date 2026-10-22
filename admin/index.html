@@ -9,141 +9,190 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co; media-src 'self' blob: https://*.supabase.co; connect-src https://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --coal:#16130f; --dust:#efe6d6; --paper:#f7f1e6; --pine:#e3a33f; --mark:#c8442b; --ok:#1f7a45;
+  --coal:#16130f; --dust:#efe6d6; --paper:#f7f1e6; --pine:#e3a33f; --mark:#c8442b; --ok:#1f7a45; --wa:#1fa855;
   --ink:#16130f; --muted:#6d6153; --line:rgba(22,19,15,.18);
   --display:"Big Shoulders Display",Impact,sans-serif; --mono:"Space Mono",ui-monospace,monospace; --sans:"Archivo",system-ui,sans-serif;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--dust);color:var(--ink);font:16px/1.5 var(--sans)}
+body{margin:0;background:var(--dust);color:var(--ink);font:17px/1.5 var(--sans)}
 [hidden]{display:none!important}
-.wrap{width:min(1000px,100% - 32px);margin-inline:auto}
-header{background:var(--coal);color:var(--dust)}
+.wrap{width:min(960px,100% - 32px);margin-inline:auto}
+header{background:var(--coal);color:var(--dust);position:sticky;top:0;z-index:10}
 header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:58px}
 .logo{font:900 1.5rem var(--display);letter-spacing:.04em}
 .logo b{color:var(--pine)}
-.logo small{font:700 .7rem var(--mono);text-transform:uppercase;color:#a89a87;margin-left:10px;letter-spacing:.06em}
-.mono{font:700 .75rem var(--mono);text-transform:uppercase;letter-spacing:.04em}
-h1,h2{font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.95;margin:0}
-h1{font-size:clamp(2.4rem,7vw,3.6rem)}
-h2{font-size:1.9rem}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;font:700 .78rem var(--mono);text-transform:uppercase;letter-spacing:.04em;border:1.5px solid var(--ink);background:var(--ink);color:var(--dust);cursor:pointer;text-decoration:none}
-.btn:hover{background:var(--pine);color:var(--ink)}
-.btn.ghost{background:transparent;color:inherit;border-color:currentColor}
-.btn.ghost:hover{background:var(--dust);color:var(--ink)}
+h1,h2,h3{font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.95;margin:0}
+h1{font-size:clamp(2.4rem,8vw,3.4rem)}
+h2{font-size:clamp(1.8rem,6vw,2.3rem)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;font:700 .95rem var(--sans);border:2px solid var(--ink);background:var(--ink);color:var(--dust);cursor:pointer;text-decoration:none;border-radius:6px}
+.btn:hover{background:#2c251d}
+.btn.light{background:transparent;color:inherit;border-color:currentColor}
+.btn.light:hover{background:rgba(0,0,0,.06)}
+.btn.big{width:100%;padding:20px;font-size:1.15rem}
+.btn.pub{background:var(--wa);border-color:var(--wa);color:#fff}
 .btn.danger{background:var(--mark);border-color:var(--mark);color:#fff}
-.btn.small{padding:7px 10px;font-size:.7rem}
-.btn:disabled{opacity:.5;cursor:wait}
+.btn:disabled{opacity:.55;cursor:wait}
 :focus-visible{outline:3px solid var(--pine);outline-offset:2px}
-.panel{background:var(--paper);border:1.5px solid var(--ink);padding:clamp(18px,4vw,32px)}
-label{display:flex;flex-direction:column;gap:6px;font:700 .72rem var(--mono);text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
-input,select{font:400 1rem var(--sans);color:var(--ink);padding:11px 12px;border:1.5px solid var(--ink);background:#fff;border-radius:0;width:100%}
-input[type=checkbox]{width:20px;height:20px;padding:0;accent-color:var(--ink)}
-.check{flex-direction:row;align-items:center;gap:10px;color:var(--ink)}
-.msg{padding:10px 12px;border:1.5px solid var(--ink);font-size:.95rem}
-.msg.err{background:#f6d9d2;border-color:var(--mark)}
-.msg.ok{background:#d9eedd;border-color:var(--ok)}
+.card{background:var(--paper);border:2px solid var(--ink);border-radius:10px;padding:clamp(18px,4vw,30px)}
+label.f{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.95rem}
+input[type=text],input[type=password],input:not([type]){font:400 1.05rem var(--sans);color:var(--ink);padding:14px;border:2px solid var(--ink);background:#fff;border-radius:6px;width:100%}
+.hint{font-weight:400;font-size:.88rem;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:50;max-width:calc(100% - 32px);padding:14px 18px;border-radius:8px;font-weight:600;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+.toast.ok{background:var(--ok);color:#fff}
+.toast.err{background:var(--mark);color:#fff}
+.err-text{color:var(--mark);font-weight:600;margin:0}
 
 /* Login */
-#login{max-width:420px;margin:12vh auto 40px}
+#login{max-width:440px;margin:10vh auto 40px}
 #login form{display:grid;gap:16px;margin-top:20px}
 
-/* Dashboard */
-.bar{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin:36px 0 20px;border-bottom:2px solid var(--ink);padding-bottom:14px}
-.bar p{margin:6px 0 0;color:var(--muted)}
-.list{display:grid;gap:10px;margin-bottom:60px}
-.row{display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;background:var(--paper);border:1.5px solid var(--ink);padding:10px}
-.row.off{opacity:.55}
-.thumb{width:72px;height:72px;object-fit:cover;background:#c89a68;display:block}
-.row h3{margin:0;font:800 1.3rem/1.05 var(--display);text-transform:uppercase}
-.row .meta{color:var(--muted);font-size:.85rem;margin-top:3px}
-.row .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.badge{display:inline-block;font:700 .62rem var(--mono);text-transform:uppercase;padding:2px 6px;border:1px solid currentColor;margin-left:6px;vertical-align:2px}
-@media (max-width:620px){.row{grid-template-columns:60px 1fr}.thumb{width:60px;height:60px}.row .acts{grid-column:1/-1;justify-content:flex-start}}
+/* Home */
+.hello{margin:32px 0 18px}
+.hello p{margin:8px 0 0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin:26px 0 60px}
+.piece{background:var(--paper);border:2px solid var(--ink);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.piece.off{opacity:.6}
+.piece .pic{position:relative;aspect-ratio:1;background:#c89a68}
+.piece .pic img{width:100%;height:100%;object-fit:cover;display:block}
+.piece .tagline{position:absolute;left:8px;top:8px;display:flex;gap:6px}
+.chip-s{background:var(--coal);color:var(--dust);font:700 .68rem var(--mono);text-transform:uppercase;padding:4px 7px;border-radius:4px}
+.chip-s.warn{background:var(--mark)}
+.piece .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px;flex:1}
+.piece h3{font-size:1.35rem}
+.piece .sub{color:var(--muted);font-size:.9rem;margin-top:-4px}
+.piece .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}
+.piece .acts .btn{padding:10px;font-size:.88rem}
+.piece .move{display:flex;gap:8px}
+.piece .move .btn{flex:1;padding:8px;font-size:.85rem}
+.confirm{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f6d9d2;padding:10px;border-radius:6px}
+.confirm p{grid-column:1/-1;margin:0;font-weight:600;font-size:.9rem}
 
-/* Form */
-#editor{margin:30px 0 60px}
-#editor form{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
-#editor .full{grid-column:1/-1}
-.preview{display:flex;gap:12px;align-items:center}
-.preview img,.preview video{width:120px;height:120px;object-fit:cover;border:1.5px solid var(--ink);background:#c89a68}
-.hint{font:400 .82rem var(--sans);color:var(--muted);text-transform:none;letter-spacing:0}
-.actions{display:flex;gap:10px;flex-wrap:wrap}
-@media (max-width:620px){#editor form{grid-template-columns:1fr}}
-.setup{max-width:640px;margin:12vh auto}
+/* Editor */
+#editor{margin:28px 0 70px}
+#editor form{display:grid;gap:26px;margin-top:18px}
+.step{display:grid;gap:10px}
+.step > b{font-size:1.05rem}
+.step > b span{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--dust);font-size:.85rem;margin-right:8px}
+.drop{position:relative;border:3px dashed var(--ink);border-radius:10px;min-height:220px;display:grid;place-items:center;text-align:center;cursor:pointer;background:#fff;overflow:hidden}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop .ph{padding:20px;font-weight:700}
+.drop .ph small{display:block;font-weight:400;color:var(--muted);margin-top:6px}
+.drop img{width:100%;max-height:420px;object-fit:contain;display:block;background:#000}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.tile{padding:16px 10px;border:2px solid var(--ink);border-radius:8px;background:#fff;font:700 1rem var(--sans);cursor:pointer;color:var(--ink)}
+.tile[aria-pressed="true"]{background:var(--ink);color:var(--pine)}
+.quick{display:flex;flex-wrap:wrap;gap:8px}
+.quick button{padding:8px 12px;border:1.5px solid var(--ink);border-radius:20px;background:#fff;font:600 .9rem var(--sans);cursor:pointer}
+details.more{border:2px solid var(--line);border-radius:8px;padding:14px 16px;background:#fff}
+details.more summary{cursor:pointer;font-weight:700}
+details.more .inner{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+details.more .full{grid-column:1/-1}
+@media (max-width:600px){details.more .inner{grid-template-columns:1fr}}
+.switch{display:flex;align-items:center;gap:12px;font-weight:700;cursor:pointer}
+.switch input{width:24px;height:24px;accent-color:var(--wa)}
+.foot-acts{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+#editor form > *,.step > *,.inner > *{min-width:0}
+.tiles{grid-template-columns:repeat(auto-fill,minmax(min(140px,100%),1fr))}
+@media (max-width:600px){.foot-acts{grid-template-columns:1fr}.tile{padding:14px 6px}}
+.setup{max-width:640px;margin:10vh auto}
 .setup code{font-family:var(--mono);background:#fff;padding:1px 5px;border:1px solid var(--line)}
 </style>
 </head>
 <body>
 <header><div class="wrap">
-  <span class="logo">RUSTI<b>CANDO</b><small>Panel</small></span>
+  <span class="logo">RUSTI<b>CANDO</b></span>
   <div style="display:flex;gap:8px">
-    <a class="btn ghost small" href="../" style="color:var(--dust)">Ver la web</a>
-    <button class="btn ghost small" id="logout" style="color:var(--dust)" hidden>Salir</button>
+    <a class="btn light" href="../" style="color:var(--dust);padding:8px 12px;font-size:.85rem">Ver la web</a>
+    <button class="btn light" id="logout" style="color:var(--dust);padding:8px 12px;font-size:.85rem" hidden>Salir</button>
   </div>
 </div></header>
 
 <main class="wrap">
-  <!-- Missing configuration -->
-  <section id="setup" class="panel setup" hidden>
+  <section id="setup" class="card setup" hidden>
     <h2>Falta conectar la base de datos</h2>
     <p>Completá <code>js/config.js</code> con la dirección y la clave pública de Supabase. Los pasos están en <code>supabase/LEEME.md</code>.</p>
   </section>
 
-  <!-- Login -->
-  <section id="login" class="panel" hidden>
-    <span class="mono" style="color:var(--mark)">Acceso privado</span>
-    <h1>Ingresar</h1>
+  <section id="login" class="card" hidden>
+    <h1>Hola de nuevo</h1>
+    <p class="hint" style="margin:8px 0 0">Entrá con tu usuario y contraseña para cargar tus muebles.</p>
     <form id="login-form" autocomplete="on">
-      <label>Correo<input id="email" type="email" autocomplete="username" required></label>
-      <label>Contraseña<input id="password" type="password" autocomplete="current-password" required minlength="8"></label>
-      <div id="login-msg" class="msg err" role="alert" hidden></div>
-      <button class="btn" id="login-btn" type="submit">Entrar</button>
+      <label class="f">Usuario<input id="user" name="username" autocomplete="username" required autocapitalize="none" spellcheck="false"></label>
+      <label class="f">Contraseña<input id="password" type="password" autocomplete="current-password" required minlength="8"></label>
+      <p id="login-msg" class="err-text" role="alert" hidden></p>
+      <button class="btn big" id="login-btn" type="submit">Entrar</button>
     </form>
   </section>
 
-  <!-- Catalog manager -->
-  <section id="dash" hidden>
-    <div class="bar">
-      <div><h1>Tus piezas</h1><p>Lo que cargues acá aparece en el catálogo de la web en el momento.</p></div>
-      <button class="btn" id="new-btn">+ Nueva pieza</button>
+  <section id="home" hidden>
+    <div class="hello">
+      <h1>¿Qué querés hacer hoy?</h1>
+      <p>Lo que publiques acá aparece en la web al instante.</p>
     </div>
-    <div id="dash-msg" class="msg" role="status" hidden></div>
-    <div id="editor" class="panel" hidden>
-      <h2 id="editor-title">Nueva pieza</h2>
+    <button class="btn big pub" id="new-btn">＋ Subir una pieza nueva</button>
+
+    <div id="editor" class="card" hidden>
+      <h2 id="editor-title">Pieza nueva</h2>
       <form id="piece-form">
-        <label class="full">Nombre *<input id="f-name" required maxlength="80" placeholder="Ej.: Ratona en ciprés"></label>
-        <label>Tipo
-          <select id="f-category">
-            <option value="ratona">Mesa ratona</option>
-            <option value="barra">Barra · mesada</option>
-            <option value="rack">Rack TV</option>
-            <option value="mesa">Mesa</option>
-            <option value="otro">Otro</option>
-          </select>
-        </label>
-        <label>Madera<input id="f-wood" maxlength="60" placeholder="Ej.: Ciprés"></label>
-        <label>Espesor<input id="f-thickness" maxlength="30" placeholder='Ej.: 2"'></label>
-        <label>Medida<input id="f-size" maxlength="40" placeholder="Ej.: 1,30 × 0,85 m"></label>
-        <label>Detalle<input id="f-detail" maxlength="60" placeholder="Ej.: Borde vivo"></label>
-        <label>Precio<input id="f-price" maxlength="30" placeholder="Ej.: $5.900 o a medida"><span class="hint">Si empieza con $, se muestra como precio.</span></label>
-        <label>Orden<input id="f-sort" type="number" min="0" max="9999" value="100"><span class="hint">Los números más bajos salen primero.</span></label>
-        <label class="check"><input id="f-visible" type="checkbox" checked> Mostrar en la web</label>
-        <label class="full">Foto<input id="f-image" type="file" accept="image/jpeg,image/png,image/webp"><span class="hint">Se achica sola para que la web cargue rápido.</span></label>
-        <label class="full">Video (opcional)<input id="f-video" type="file" accept="video/mp4"><span class="hint">MP4 de hasta 25 MB. Se reproduce en loop y sin sonido.</span></label>
-        <div class="full preview" id="preview"></div>
-        <div id="form-msg" class="full msg err" role="alert" hidden></div>
-        <div class="full actions">
-          <button class="btn" id="save-btn" type="submit">Guardar</button>
-          <button class="btn ghost" id="cancel-btn" type="button">Cancelar</button>
+        <div class="step">
+          <b><span>1</span>La foto</b>
+          <label class="drop" id="drop">
+            <input id="f-image" type="file" accept="image/*" aria-label="Elegir foto">
+            <div class="ph" id="drop-ph">📷 Tocá acá para elegir una foto<small>Desde el celular podés sacarla en el momento</small></div>
+          </label>
+        </div>
+
+        <div class="step">
+          <b><span>2</span>¿Qué es?</b>
+          <div class="tiles" id="tiles" role="group" aria-label="Tipo de pieza">
+            <button type="button" class="tile" data-c="ratona">Mesa ratona</button>
+            <button type="button" class="tile" data-c="barra">Barra o mesada</button>
+            <button type="button" class="tile" data-c="rack">Rack de TV</button>
+            <button type="button" class="tile" data-c="mesa">Mesa</button>
+            <button type="button" class="tile" data-c="otro">Otra cosa</button>
+          </div>
+        </div>
+
+        <div class="step">
+          <b><span>3</span>Nombre</b>
+          <input id="f-name" maxlength="80" required placeholder="Ej.: Ratona en ciprés" aria-label="Nombre de la pieza">
+        </div>
+
+        <details class="more" id="more">
+          <summary>Agregar detalles (opcional): madera, medidas, precio, video</summary>
+          <div class="inner">
+            <label class="f full">Madera<input id="f-wood" maxlength="60" placeholder="Ej.: Ciprés">
+              <span class="quick" data-for="f-wood"><button type="button">Ciprés</button><button type="button">Pino marítimo</button><button type="button">Cedro azul</button><button type="button">Ciprés lambertiana</button></span></label>
+            <label class="f">Medida<input id="f-size" maxlength="40" placeholder="Ej.: 1,30 × 0,85 m"></label>
+            <label class="f">Espesor<input id="f-thickness" maxlength="30" placeholder='Ej.: 2"'>
+              <span class="quick" data-for="f-thickness"><button type="button">2"</button><button type="button">3"</button></span></label>
+            <label class="f">Detalle<input id="f-detail" maxlength="60" placeholder="Ej.: Borde vivo">
+              <span class="quick" data-for="f-detail"><button type="button">Borde vivo</button><button type="button">Base de hierro</button><button type="button">En stock</button></span></label>
+            <label class="f">Precio<input id="f-price" maxlength="30" placeholder="Ej.: $5.900">
+              <span class="hint">Si lo dejás vacío dice "a medida".</span></label>
+            <label class="f full">Video (opcional)<input id="f-video" type="file" accept="video/mp4,video/quicktime">
+              <span class="hint">Hasta 25 MB. Se ve en loop y sin sonido.</span></label>
+          </div>
+        </details>
+
+        <label class="switch"><input id="f-visible" type="checkbox" checked> Mostrar en la web</label>
+        <p id="form-msg" class="err-text" role="alert" hidden></p>
+        <div class="foot-acts">
+          <button class="btn big pub" id="save-btn" type="submit">Publicar en la web</button>
+          <button class="btn big light" id="cancel-btn" type="button">Cancelar</button>
         </div>
       </form>
     </div>
-    <div id="list" class="list"></div>
+
+    <div class="hello" style="margin-top:44px"><h2>Tus piezas en la web</h2><p id="count"></p></div>
+    <div id="list" class="grid"></div>
   </section>
 </main>
+
+<div id="toast" class="toast" role="status" hidden></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o" crossorigin="anonymous"></script>
 <script src="../js/config.js"></script>

@@ -51,7 +51,7 @@ create policy "admin borra" on public.products
 
 -- 4. Fotos y videos -----------------------------------------------------------
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-values ('productos', 'productos', true, 26214400, array['image/jpeg','image/png','image/webp','video/mp4'])
+values ('productos', 'productos', true, 26214400, array['image/jpeg','image/png','image/webp','video/mp4','video/quicktime'])
 on conflict (id) do update set public = true, file_size_limit = excluded.file_size_limit,
   allowed_mime_types = excluded.allowed_mime_types;
 

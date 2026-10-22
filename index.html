@@ -10,7 +10,7 @@
 <meta property="og:image" content="img/ratona-pino.jpg">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#16130f">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.supabase.co; media-src 'self' https://*.supabase.co; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.supabase.co; media-src 'self' https://*.supabase.co; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -235,8 +235,51 @@ details p{margin:.8em 0 0;color:var(--muted);max-width:60ch}
 @media (max-width:760px){.contact-row{grid-template-columns:1fr}.contact-row > *{border-right:0!important;border-bottom:1px solid rgba(239,230,214,.18);padding-left:0!important}}
 .bigmark{font:900 clamp(5rem,24vw,21rem)/.78 var(--display);text-transform:uppercase;color:var(--coal-2);margin-top:40px;letter-spacing:-.01em;white-space:nowrap;-webkit-text-stroke:1px rgba(239,230,214,.12)}
 footer{background:var(--coal);color:#857867;padding:18px 0 26px;font:400 .72rem var(--mono);text-transform:uppercase}
-footer .quiet{color:inherit;text-decoration:none;cursor:text}
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* Historias */
+.historias{padding-top:0}
+.hl-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:26px 14px}
+.hl{background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--ink);font:inherit}
+.hl-ring{width:104px;height:104px;border-radius:50%;padding:5px;background:repeating-radial-gradient(circle,var(--pine) 0 2px,var(--mark) 2px 4px);display:block;transition:transform .3s}
+.hl-ring img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid var(--dust);display:block;background:#c89a68}
+.hl:hover .hl-ring,.hl:focus-visible .hl-ring{transform:rotate(-8deg) scale(1.05)}
+.hl-title{font:800 1.1rem/1 var(--display);text-transform:uppercase;text-align:center}
+.hl-count{font-size:.66rem;color:var(--muted);margin-top:-4px}
+@media (max-width:640px){.hl-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;gap:16px}.hl{flex:0 0 92px;scroll-snap-align:start}.hl-ring{width:84px;height:84px}}
+
+.story{padding:0;border:0;background:transparent;max-width:none;max-height:none;width:100%;height:100%}
+.story::backdrop{background:rgba(10,8,6,.94)}
+.st-frame{position:relative;height:min(100%,92vh);aspect-ratio:9/16;max-width:100%;margin:4vh auto 0;background:#000;overflow:hidden;border-radius:10px}
+@media (max-width:600px){.st-frame{margin:0;height:100%;width:100%;aspect-ratio:auto;border-radius:0}}
+.st-media,.st-media img,.st-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.st-bars{position:absolute;z-index:3;top:10px;left:10px;right:10px;display:flex;gap:4px}
+.st-bars span{flex:1;height:3px;background:rgba(255,255,255,.35);border-radius:2px;overflow:hidden}
+.st-bars i{display:block;height:100%;background:#fff;width:0}
+.st-head{position:absolute;z-index:3;top:22px;left:10px;right:10px;display:flex;align-items:center;gap:8px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.st-av{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--pine)}
+.st-title{font:800 1.05rem var(--display);text-transform:uppercase}
+.st-n{font:400 .7rem var(--mono);opacity:.85;margin-right:auto}
+.st-sound{background:rgba(0,0,0,.45);color:#fff;border:1px solid rgba(255,255,255,.5);font:700 .65rem var(--mono);text-transform:uppercase;padding:6px 8px;cursor:pointer}
+.st-close{background:none;border:0;color:#fff;font:400 2rem/1 var(--mono);cursor:pointer;padding:0 4px}
+.st-prev,.st-next{position:absolute;z-index:2;top:70px;bottom:80px;width:40%;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.st-prev{left:0}.st-next{right:0;width:60%}
+.st-cta{position:absolute;z-index:3;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--wa);color:#fff;text-decoration:none;font:700 .75rem var(--mono);text-transform:uppercase;padding:12px 16px;white-space:nowrap;border:2px solid #fff}
+
+/* Footer panel login */
+.panel-login{padding-top:14px;margin-top:14px;border-top:1px solid rgba(239,230,214,.12)}
+details.panel-login{border-bottom:0;padding-bottom:0}
+.panel-login summary{cursor:pointer;list-style:none;display:block;width:max-content;color:#a89a87;font:400 .72rem var(--mono);text-transform:uppercase;letter-spacing:.04em}
+.panel-login summary::after{content:none}
+.panel-login summary::-webkit-details-marker{display:none}
+.panel-login summary::before{content:"→ "}
+.panel-login summary:hover{color:var(--pine)}
+.panel-login form{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:14px}
+.panel-login label{display:flex;flex-direction:column;gap:5px;font:700 .68rem var(--mono);color:#a89a87;text-transform:uppercase}
+.panel-login input{font:400 .95rem var(--sans);padding:9px 10px;background:#2a241c;border:1px solid #4b4235;color:var(--dust);width:200px;max-width:100%}
+.panel-login button{font:700 .75rem var(--mono);text-transform:uppercase;padding:11px 16px;background:var(--pine);color:var(--coal);border:0;cursor:pointer}
+.panel-login button:disabled{opacity:.6;cursor:wait}
+.panel-login p{flex-basis:100%;margin:0;color:#f0a58f;text-transform:none;font:400 .85rem var(--sans)}
 
 /* Floating WhatsApp */
 .fab{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;width:58px;height:58px;border-radius:50%;background:var(--wa);color:#fff;display:grid;place-items:center;box-shadow:3px 3px 0 var(--coal);border:2px solid var(--coal);transition:transform .15s}
@@ -244,11 +287,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .fab svg{width:30px;height:30px}
 
 /* Lightbox */
-dialog{border:0;padding:0;background:transparent;max-width:min(92vw,1000px)}
-dialog::backdrop{background:rgba(22,19,15,.9)}
-dialog img{max-height:82vh;margin:auto;border:2px solid var(--dust)}
-dialog p{color:var(--dust);text-align:center;margin:.8em 0 0;font:700 .8rem var(--mono);text-transform:uppercase}
-dialog button{position:fixed;top:12px;right:18px;background:none;border:0;color:var(--dust);font:400 2.4rem var(--mono);cursor:pointer}
+#lb{border:0;padding:0;background:transparent;max-width:min(92vw,1000px)}
+#lb::backdrop{background:rgba(22,19,15,.9)}
+#lb img{max-height:82vh;margin:auto;border:2px solid var(--dust)}
+#lb p{color:var(--dust);text-align:center;margin:.8em 0 0;font:700 .8rem var(--mono);text-transform:uppercase}
+#lb button{position:fixed;top:12px;right:18px;background:none;border:0;color:var(--dust);font:400 2.4rem var(--mono);cursor:pointer}
 
 .anim .reveal{transform:translateY(16px);transition:transform .8s cubic-bezier(.2,.7,.2,1)}
 .anim .reveal.in{transform:none}
@@ -266,6 +309,7 @@ dialog button{position:fixed;top:12px;right:18px;background:none;border:0;color:
     <a href="#inicio" class="logo">RUSTI<b>CANDO</b></a>
     <ul>
       <li><a href="#catalogo">Catálogo</a></li>
+      <li><a href="#historias">Historias</a></li>
       <li><a href="#a-medida">A medida</a></li>
       <li><a href="#maderas">Maderas</a></li>
       <li><a href="#proceso">Proceso</a></li>
@@ -384,6 +428,17 @@ dialog button{position:fixed;top:12px;right:18px;background:none;border:0;color:
     </div>
   </section>
 
+  <section id="historias" class="sec historias">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">02 /</span>
+        <h2 class="display">Historias</h2>
+        <p>El taller, los procesos y los muebles ya instalados en casa de nuestros clientes. Tocá un círculo para verlas.</p>
+      </div>
+      <div class="hl-row" id="hl-row"></div>
+    </div>
+  </section>
+
   <section class="manifesto sec">
     <div class="wrap reveal">
       <p>Cada <span class="pill"><img src="img/mesada-lambertiana.jpg" alt=""></span> tablón tiene <span class="it">su propia</span> historia. Nosotros la <span class="scribble">terminamos<svg viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true"><path d="M20 58 C 40 12, 250 6, 284 40 C 304 70, 210 96, 120 92 C 50 89, 6 72, 22 44 C 34 26, 90 16, 150 14"/></svg></span> a mano.</p>
@@ -394,7 +449,7 @@ dialog button{position:fixed;top:12px;right:18px;background:none;border:0;color:
   <section id="a-medida" class="sec">
     <div class="wrap">
       <div class="sec-head">
-        <span class="num">02 /</span>
+        <span class="num">03 /</span>
         <h2 class="display">A medida</h2>
         <p>Si lo imaginás, lo podemos hacer.</p>
       </div>
@@ -413,7 +468,7 @@ dialog button{position:fixed;top:12px;right:18px;background:none;border:0;color:
   <section id="maderas" class="sec" style="padding-top:0">
     <div class="wrap">
       <div class="sec-head">
-        <span class="num">03 /</span>
+        <span class="num">04 /</span>
         <h2 class="display">Maderas</h2>
         <p>Trabajamos tablones gruesos que respetan el borde y la veta natural de cada árbol.</p>
       </div>
@@ -429,7 +484,7 @@ dialog button{position:fixed;top:12px;right:18px;background:none;border:0;color:
   <section id="proceso" class="sec process">
     <div class="wrap">
       <div class="sec-head">
-        <span class="num">04 /</span>
+        <span class="num">05 /</span>
         <h2 class="display">Cómo encargar</h2>
         <p>Cuatro pasos, desde tu mensaje hasta tu casa.</p>
       </div>
@@ -454,7 +509,7 @@ dialog button{position:fixed;top:12px;right:18px;background:none;border:0;color:
 
   <section id="preguntas" class="sec">
     <div class="wrap faq-grid">
-      <div><span class="mono" style="color:var(--mark)">05 /</span><h2 class="display">Preguntas</h2></div>
+      <div><span class="mono" style="color:var(--mark)">06 /</span><h2 class="display">Preguntas</h2></div>
       <div>
         <details><summary>¿Hacen muebles a medida?</summary><p>Sí. Cada mueble se adapta en medidas, madera y acabado. Escribinos con tu idea y te pasamos presupuesto.</p></details>
         <details><summary>¿Hacen envíos?</summary><p>Sí, enviamos a todo Uruguay. El taller está en San José.</p></details>
@@ -467,7 +522,7 @@ dialog button{position:fixed;top:12px;right:18px;background:none;border:0;color:
 
   <section id="contacto" class="contact">
     <div class="wrap">
-      <span class="mono">06 / Contacto · respondemos por WhatsApp</span>
+      <span class="mono">07 / Contacto · respondemos por WhatsApp</span>
       <a class="phone wa" data-msg="¡Hola Rusticando! Quiero hacer una consulta." href="#">098 923 479</a>
       <div class="contact-row">
         <a class="wa" data-msg="¡Hola Rusticando! Quiero hacer una consulta." href="#"><span class="mono">WhatsApp</span><strong>Presupuestos ↗</strong></a>
@@ -481,16 +536,39 @@ dialog button{position:fixed;top:12px;right:18px;background:none;border:0;color:
 
 <footer>
   <div class="wrap">
-    <span><a class="quiet" href="admin/" rel="nofollow" aria-label="©">©</a> <span id="y"></span> Rusticando · Muebles artesanales en madera maciza</span>
+    <span>© <span id="y"></span> Rusticando · Muebles artesanales en madera maciza</span>
     <span>Hecho en San José 🇺🇾</span>
   </div>
+  <details class="wrap panel-login" id="panel-login">
+    <summary>Ingresar al panel</summary>
+    <form id="panel-form" autocomplete="on">
+      <label>Usuario<input id="pl-user" name="username" autocomplete="username" required autocapitalize="none" spellcheck="false"></label>
+      <label>Contraseña<input id="pl-pass" name="password" type="password" autocomplete="current-password" required minlength="8"></label>
+      <button type="submit" id="pl-btn">Entrar</button>
+      <p id="pl-msg" role="alert" hidden></p>
+    </form>
+  </details>
 </footer>
 
 <a class="fab wa" data-msg="¡Hola Rusticando! Quiero hacer una consulta." href="#" aria-label="Escribinos por WhatsApp"><svg><use href="#i-wa"/></svg></a>
 
 <dialog id="lb"><button aria-label="Cerrar">×</button><img alt=""><p></p></dialog>
 
+<dialog id="story" class="story" aria-label="Historias">
+  <div class="st-frame">
+    <div class="st-bars"></div>
+    <div class="st-head"><img class="st-av" alt=""><b class="st-title"></b><span class="st-n"></span><button class="st-sound" type="button">Sonido: no</button><button class="st-close" type="button" aria-label="Cerrar">×</button></div>
+    <div class="st-media"></div>
+    <button class="st-prev" type="button" aria-label="Historia anterior"></button>
+    <button class="st-next" type="button" aria-label="Historia siguiente"></button>
+    <a class="st-cta" target="_blank" rel="noopener noreferrer" href="#">Consultar por WhatsApp</a>
+  </div>
+</dialog>
+
 <script src="js/config.js"></script>
 <script src="js/app.js"></script>
+<script src="js/historias.js"></script>
+<script src="js/historias-ui.js"></script>
+<script src="js/login.js"></script>
 </body>
 </html>

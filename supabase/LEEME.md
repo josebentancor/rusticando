@@ -1,6 +1,6 @@
 # Conectar el panel de Rusticando
 
-El panel está en `/admin/`. En la web se entra tocando el **©** del pie de página.
+El panel está en `/admin/`. En la web se entra desde **"Ingresar al panel"**, abajo de todo: usuario y contraseña.
 Hasta que hagas estos pasos, la web muestra el catálogo fijo y el panel avisa que falta la conexión.
 
 ## 1. Crear el proyecto (5 minutos)
@@ -16,12 +16,16 @@ Hasta que hagas estos pasos, la web muestra el catálogo fijo y el panel avisa q
 
 ## 3. Crear el usuario del cliente
 
-1. **Authentication → Users → Add user → Create new user**: correo del cliente y una contraseña larga (12+ caracteres). Marcá **Auto Confirm User**.
-2. En **SQL Editor**, corré esta línea con ese correo:
+El cliente entra con un **usuario corto** (por ejemplo `rusticando`). Por detrás, la web lo completa como `rusticando@rusticando.uy` (se cambia en `loginDomain` de `js/config.js`).
+
+1. **Authentication → Users → Add user → Create new user**: correo `rusticando@rusticando.uy` y una contraseña larga (12+ caracteres, fácil de recordar para el cliente, por ejemplo tres palabras y un número). Marcá **Auto Confirm User**.
+2. En **SQL Editor**, corré esta línea:
 
    ```sql
-   insert into public.admins (user_id) select id from auth.users where email = 'correo-del-cliente@ejemplo.com';
+   insert into public.admins (user_id) select id from auth.users where email = 'rusticando@rusticando.uy';
    ```
+
+Ese correo no necesita existir de verdad. La contraseña se cambia desde **Authentication → Users** si el cliente se la olvida.
 
 ## 4. Conectar la web
 
@@ -48,7 +52,7 @@ La clave **anon** es pública a propósito: está pensada para ir en la web. Lo 
 - Las fotos se achican y se vuelven a guardar como JPEG al subirlas, lo que también borra la ubicación GPS del celular.
 - HTTPS obligatorio (GitHub Pages).
 
-El acceso escondido es solo comodidad: la seguridad real es el usuario y la contraseña.
+El enlace "Ingresar al panel" es visible para cualquiera, pero sin usuario y contraseña no se puede hacer nada: la seguridad la dan la cuenta y las reglas de la base.
 
 ## Plan gratuito
 
