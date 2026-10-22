@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="es-UY">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rusticando · Muebles en madera maciza</title>
+<meta name="description" content="Muebles artesanales en madera maciza hechos a mano en San José, Uruguay. Barras, mesas ratonas, racks de TV, mesadas y desayunadores a medida. Envíos a todo el país.">
+<meta property="og:title" content="Rusticando · Muebles en madera maciza">
+<meta property="og:description" content="Piezas únicas hechas a mano en San José, Uruguay. A medida y con envíos a todo el país.">
+<meta property="og:image" content="img/ratona-pino.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#16130f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FurnitureStore",
+  "name": "Rusticando",
+  "description": "Muebles artesanales en madera maciza. Piezas únicas, elaboradas a mano.",
+  "telephone": "+598 98 923 479",
+  "address": {"@type": "PostalAddress", "addressLocality": "San José", "addressCountry": "UY"},
+  "areaServed": "Uruguay",
+  "sameAs": ["https://www.instagram.com/rusticando.uy/"]
+}
+</script>
+<style>
+:root{
+  --coal:#16130f; --coal-2:#221d17; --dust:#efe6d6; --dust-2:#e4d7c1; --pine:#e3a33f; --mark:#c8442b;
+  --ink:#16130f; --muted:#6d6153; --line:rgba(22,19,15,.18); --wa:#1fa855;
+  --display:"Big Shoulders Display",Impact,sans-serif; --serif:"Instrument Serif",Georgia,serif;
+  --mono:"Space Mono",ui-monospace,monospace; --sans:"Archivo",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--dust);color:var(--ink);font:17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:51;background:var(--coal)}
+/* Paper grain over the whole page */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.22;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4  0 0 0 0 .3  0 0 0 0 .2  0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+img{display:block;max-width:100%}
+a{color:inherit}
+.wrap{width:min(1240px,100% - 32px);margin-inline:auto}
+section{scroll-margin-top:64px}
+.mono{font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase}
+.display{font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.86;letter-spacing:-.005em;margin:0}
+.it{font-family:var(--serif);font-style:italic;font-weight:400;text-transform:none;letter-spacing:0}
+
+/* Header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--coal);color:var(--dust)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.logo{font-family:var(--display);font-weight:900;font-size:1.7rem;letter-spacing:.04em;text-decoration:none;line-height:1}
+.logo b{color:var(--pine)}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0}
+.nav ul a{text-decoration:none;opacity:.75}
+.nav ul a:hover{opacity:1;color:var(--pine)}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;background:var(--pine);color:var(--coal);text-decoration:none;font:700 .8rem var(--mono);text-transform:uppercase;padding:10px 14px}
+.nav-cta:hover{background:var(--dust)}
+.nav-cta svg{width:18px;height:18px}
+@media (max-width:900px){.nav ul{display:none}}
+
+/* Hero */
+.hero{background:var(--coal);color:var(--dust);padding:28px 0 0;position:relative;overflow:hidden}
+.hero-top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:#a89a87;border-bottom:1px solid rgba(239,230,214,.15);padding-bottom:14px}
+.hero h1{font-size:min(calc((100vw - 48px) / 4.75),16rem);margin:18px 0 0;color:var(--dust);white-space:nowrap}
+.hero h1 .row2{display:flex;align-items:flex-end;gap:.18em;justify-content:flex-end}
+.hero h1 .it{color:var(--pine);font-size:.42em;line-height:1;padding-bottom:.12em}
+.hero-body{display:grid;grid-template-columns:5fr 7fr;gap:clamp(24px,4vw,56px);margin-top:clamp(20px,3vw,36px);align-items:end}
+.hero-copy p{font-size:1.15rem;color:#cfc3b1;max-width:38ch;margin:0 0 26px}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 20px;font:700 .82rem var(--mono);text-transform:uppercase;letter-spacing:.04em;text-decoration:none;border:1.5px solid currentColor;transition:background .2s,color .2s,transform .2s}
+.btn svg{width:20px;height:20px}
+.btn-wa{background:var(--wa);border-color:var(--wa);color:#fff}
+.btn-wa:hover{transform:translate(-3px,-3px);box-shadow:3px 3px 0 var(--pine)}
+.btn-line:hover{background:var(--dust);color:var(--coal)}
+.hero-photo{position:relative;padding-bottom:46px}
+.hero-photo .ph{aspect-ratio:16/10}
+.circle-note{position:absolute;top:-34px;right:6%;font-family:var(--serif);font-style:italic;font-size:1.5rem;color:var(--pine);transform:rotate(-6deg)}
+@media (max-width:900px){.hero-body{grid-template-columns:1fr}.circle-note{top:-30px}}
+
+/* Dimension line (cota) */
+.dim{position:absolute;left:0;right:0;bottom:14px;height:1px;background:var(--mark)}
+.dim::before,.dim::after{content:"";position:absolute;top:-7px;width:1px;height:15px;background:var(--mark)}
+.dim::before{left:0}.dim::after{right:0}
+.dim span{position:absolute;left:50%;top:-11px;transform:translateX(-50%);background:var(--coal);color:var(--mark);padding:0 10px;font:700 .78rem var(--mono)}
+.dim-v{position:absolute;top:0;bottom:46px;right:-18px;width:1px;background:var(--mark)}
+.dim-v::before,.dim-v::after{content:"";position:absolute;left:-7px;height:1px;width:15px;background:var(--mark)}
+.dim-v::before{top:0}.dim-v::after{bottom:0}
+.dim-v span{position:absolute;top:50%;left:-1px;transform:translate(-50%,-50%) rotate(-90deg);background:var(--coal);color:var(--mark);padding:0 8px;font:700 .78rem var(--mono);white-space:nowrap}
+@media (max-width:900px){.dim-v{display:none}}
+
+/* Photo with wood-grain fallback */
+.ph{position:relative;overflow:hidden;background:
+  repeating-linear-gradient(94deg,rgba(255,255,255,.07) 0 2px,transparent 2px 10px),
+  linear-gradient(135deg,#c89a68,#8f5f36)}
+.ph img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1),filter .4s}
+.ph.missing img{display:none}
+
+/* Ticker */
+.ticker{background:var(--pine);color:var(--coal);overflow:hidden;white-space:nowrap;border-block:2px solid var(--coal)}
+.ticker div{display:inline-block;padding:13px 0;font:900 1.35rem var(--display);text-transform:uppercase;letter-spacing:.03em;animation:tick 38s linear infinite}
+.ticker i{font-style:normal;color:var(--mark);margin:0 .7em}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* Section heads */
+.sec{padding:clamp(70px,10vw,130px) 0}
+.sec-head{display:grid;grid-template-columns:auto 1fr;gap:12px 32px;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:34px}
+.sec-head .num{font:700 .8rem var(--mono);color:var(--mark);grid-row:span 2;align-self:start;padding-top:10px}
+.sec-head h2{font-size:clamp(3rem,8vw,6.5rem)}
+.sec-head p{margin:0;color:var(--muted);max-width:52ch}
+@media (max-width:640px){.sec-head{grid-template-columns:1fr}.sec-head .num{grid-row:auto;padding:0}}
+
+/* Filters */
+.filters{display:flex;flex-wrap:wrap;gap:0;margin-bottom:30px;border:1.5px solid var(--ink);width:max-content;max-width:100%}
+.chip{border:0;border-right:1.5px solid var(--ink);background:transparent;padding:10px 16px;font:700 .75rem var(--mono);text-transform:uppercase;cursor:pointer;color:var(--ink)}
+.chip:last-child{border-right:0}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--pine)}
+@media (max-width:640px){.filters{width:100%}.chip{flex:1 1 33%;border-bottom:1.5px solid var(--ink)}}
+
+/* Catalog: lumber-tag cards */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,2.4vw,32px)}
+@media (max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.grid{grid-template-columns:1fr}}
+.tag{background:#f7f1e6;border:1.5px solid var(--ink);display:flex;flex-direction:column;position:relative;transition:transform .3s,box-shadow .3s}
+.tag:hover{transform:rotate(-.6deg) translateY(-4px);box-shadow:8px 8px 0 var(--ink)}
+.tag:nth-child(even):hover{transform:rotate(.6deg) translateY(-4px)}
+.tag:hover .ph img{transform:scale(1.05)}
+.tag-top{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1.5px solid var(--ink)}
+.tag-top .hole{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);background:var(--dust)}
+.tag .ph{aspect-ratio:1;border:0;padding:0;width:100%;cursor:zoom-in;display:block}
+.tag-body{padding:16px 14px 14px;border-top:1.5px solid var(--ink);display:flex;flex-direction:column;flex:1}
+.tag h3{font:800 1.75rem/1 var(--display);text-transform:uppercase;margin:0 0 12px}
+.specs{margin:0 0 14px;display:grid;grid-template-columns:auto 1fr;font:400 .76rem var(--mono);text-transform:uppercase}
+.specs dt,.specs dd{margin:0;padding:6px 0;border-top:1px dashed var(--line)}
+.specs dt{color:var(--muted);padding-right:14px}
+.specs dd{text-align:right}
+.tag-foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;gap:10px}
+.price{font:900 1.6rem var(--display)}
+.price.soft{font:italic 1.35rem var(--serif);color:var(--muted)}
+.ask{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:var(--dust);text-decoration:none;font:700 .72rem var(--mono);text-transform:uppercase;padding:9px 12px}
+.ask:hover{background:var(--wa)}
+.ask svg{width:15px;height:15px}
+.tag[hidden]{display:none}
+.more{margin-top:40px;text-align:center}
+
+/* Manifesto */
+.manifesto{background:var(--coal);color:var(--dust)}
+.manifesto p{font:900 clamp(2.2rem,6.6vw,5.6rem)/1 var(--display);text-transform:uppercase;margin:0}
+.manifesto .it{color:var(--pine)}
+.pill{display:inline-block;width:1.9em;height:.82em;vertical-align:-.02em;border-radius:999px;overflow:hidden;background:#8f5f36}
+.pill img{width:100%;height:100%;object-fit:cover}
+.scribble{position:relative;display:inline-block}
+.scribble svg{position:absolute;left:-6%;top:-14%;width:112%;height:128%;overflow:visible;pointer-events:none}
+.scribble path{fill:none;stroke:var(--mark);stroke-width:3;stroke-linecap:round;stroke-dasharray:900;stroke-dashoffset:900;transition:stroke-dashoffset 1.6s ease .3s}
+.in .scribble path,.scribble.in path{stroke-dashoffset:0}
+.manifesto-foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:40px;color:#a89a87;border-top:1px solid rgba(239,230,214,.15);padding-top:16px}
+
+/* A medida */
+.custom{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--ink)}
+.custom .ph{min-height:420px;border-right:2px solid var(--ink)}
+.custom-txt{padding:clamp(26px,4vw,52px);display:flex;flex-direction:column;justify-content:center;gap:18px}
+.custom-txt h2{font-size:clamp(2.8rem,6vw,4.8rem)}
+.custom-txt p{margin:0;color:var(--muted);font-size:1.08rem}
+.checks{list-style:none;margin:0;padding:0;font:400 .82rem var(--mono);text-transform:uppercase}
+.checks li{padding:9px 0;border-top:1px dashed var(--line);display:flex;gap:10px}
+.checks li::before{content:"✓";color:var(--wa);font-weight:700}
+.custom .btn{align-self:flex-start}
+@media (max-width:860px){.custom{grid-template-columns:1fr}.custom .ph{min-height:300px;border-right:0;border-bottom:2px solid var(--ink)}}
+
+/* Woods: tree cross-sections */
+.woods{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,56px)}
+.wood{text-align:center}
+.slice{width:min(260px,70vw);aspect-ratio:1;margin:0 auto 22px;border-radius:50% 47% 52% 49%/49% 52% 48% 51%;
+  border:12px solid #4a2f1c;box-shadow:inset 0 0 0 3px #6b452a,0 18px 30px rgba(22,19,15,.25);transition:transform .8s}
+.wood:hover .slice{transform:rotate(25deg)}
+.s1{background:radial-gradient(circle at 46% 52%,#7a4a26 0 3%,transparent 3.5%),repeating-radial-gradient(circle at 46% 52%,#e6b880 0 5px,#d39b5c 5px 7px,#e9c08e 7px 13px)}
+.s2{background:radial-gradient(circle at 54% 47%,#6b3f1f 0 3%,transparent 3.5%),repeating-radial-gradient(circle at 54% 47%,#e2ad6b 0 4px,#c4823f 4px 7px,#e8b979 7px 11px)}
+.s3{background:radial-gradient(circle at 50% 50%,#3d2414 0 4%,transparent 4.5%),repeating-radial-gradient(circle at 50% 50%,#a86a3e 0 5px,#7f4a29 5px 8px,#b27646 8px 14px)}
+.wood h3{font:900 2.4rem/1 var(--display);text-transform:uppercase;margin:0 0 6px}
+.wood .mono{color:var(--mark);display:block;margin-bottom:10px}
+.wood p{margin:0 auto;color:var(--muted);max-width:30ch}
+@media (max-width:860px){.woods{grid-template-columns:1fr}}
+.finish{margin-top:56px;background:var(--pine);border:2px solid var(--ink);padding:22px 26px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.finish strong{font:900 2rem/1 var(--display);text-transform:uppercase}
+.finish span{font-family:var(--serif);font-style:italic;font-size:1.3rem}
+
+/* Process */
+.process{background:var(--dust-2)}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink)}
+.steps li{padding:26px 22px 30px;border-right:1px solid var(--line)}
+.steps li:last-child{border-right:0}
+.steps b{display:block;font:900 5rem/1 var(--display);color:transparent;-webkit-text-stroke:1.5px var(--ink);margin-bottom:14px}
+.steps li:hover b{color:var(--pine)}
+.steps h3{font:800 1.5rem/1.05 var(--display);text-transform:uppercase;margin:0 0 8px}
+.steps p{margin:0;color:var(--muted);font-size:.96rem}
+@media (max-width:900px){.steps{grid-template-columns:1fr 1fr}.steps li:nth-child(2){border-right:0}.steps li{border-bottom:1px solid var(--line)}}
+@media (max-width:560px){.steps{grid-template-columns:1fr}.steps li{border-right:0}}
+
+/* Testimonial */
+.quote{background:var(--mark);color:var(--dust);padding:clamp(70px,9vw,120px) 0}
+.quote .wrap{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,60px);align-items:start}
+.quote .q{font:900 clamp(8rem,18vw,15rem)/.7 var(--display);color:var(--coal)}
+.quote blockquote{margin:0;font:400 clamp(1.9rem,4.4vw,3.6rem)/1.08 var(--serif)}
+.quote cite{display:block;margin-top:24px;font-style:normal}
+@media (max-width:640px){.quote .wrap{grid-template-columns:1fr}.quote .q{font-size:7rem;height:.5em}}
+
+/* FAQ */
+.faq-grid{display:grid;grid-template-columns:1fr 2fr;gap:clamp(24px,5vw,72px)}
+.faq-grid h2{font-size:clamp(3rem,7vw,5.5rem)}
+details{border-top:1.5px solid var(--ink);padding:18px 0}
+details:last-child{border-bottom:1.5px solid var(--ink)}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;font:800 1.45rem/1.1 var(--display);text-transform:uppercase}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--mono);color:var(--mark);transition:transform .25s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{margin:.8em 0 0;color:var(--muted);max-width:60ch}
+@media (max-width:860px){.faq-grid{grid-template-columns:1fr}}
+
+/* Contact */
+.contact{background:var(--coal);color:var(--dust);padding:clamp(70px,10vw,120px) 0 0;overflow:hidden}
+.contact .mono{color:#a89a87}
+.phone{display:block;text-decoration:none;font:900 clamp(3.6rem,13vw,11rem)/.9 var(--display);margin:14px 0 30px;color:var(--pine);transition:color .2s}
+.phone:hover{color:var(--dust)}
+.contact-row{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(239,230,214,.18)}
+.contact-row a,.contact-row div{padding:22px 18px 22px 0;text-decoration:none;border-right:1px solid rgba(239,230,214,.18)}
+.contact-row > :not(:first-child){padding-left:18px}
+.contact-row > :last-child{border-right:0}
+.contact-row strong{display:block;font:800 1.5rem var(--display);text-transform:uppercase}
+.contact-row a:hover strong{color:var(--pine)}
+@media (max-width:760px){.contact-row{grid-template-columns:1fr}.contact-row > *{border-right:0!important;border-bottom:1px solid rgba(239,230,214,.18);padding-left:0!important}}
+.bigmark{font:900 clamp(5rem,24vw,21rem)/.78 var(--display);text-transform:uppercase;color:var(--coal-2);margin-top:40px;letter-spacing:-.01em;white-space:nowrap;-webkit-text-stroke:1px rgba(239,230,214,.12)}
+footer{background:var(--coal);color:#857867;padding:18px 0 26px;font:400 .72rem var(--mono);text-transform:uppercase}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* Floating WhatsApp */
+.fab{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;width:58px;height:58px;border-radius:50%;background:var(--wa);color:#fff;display:grid;place-items:center;box-shadow:3px 3px 0 var(--coal);border:2px solid var(--coal);transition:transform .15s}
+.fab:hover{transform:translate(-2px,-2px)}
+.fab svg{width:30px;height:30px}
+
+/* Lightbox */
+dialog{border:0;padding:0;background:transparent;max-width:min(92vw,1000px)}
+dialog::backdrop{background:rgba(22,19,15,.9)}
+dialog img{max-height:82vh;margin:auto;border:2px solid var(--dust)}
+dialog p{color:var(--dust);text-align:center;margin:.8em 0 0;font:700 .8rem var(--mono);text-transform:uppercase}
+dialog button{position:fixed;top:12px;right:18px;background:none;border:0;color:var(--dust);font:400 2.4rem var(--mono);cursor:pointer}
+
+.anim .reveal{transform:translateY(16px);transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.anim .reveal.in{transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.anim .reveal{opacity:1;transform:none}.scribble path{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.03c-.25.69-1.45 1.33-2 1.38-.51.05-1 .24-3.36-.7-2.84-1.12-4.65-4.03-4.79-4.22-.14-.18-1.14-1.52-1.14-2.9s.72-2.06.98-2.34c.25-.28.55-.35.74-.35l.53.01c.17 0 .4-.06.62.48.25.6.85 2.07.92 2.22.07.15.12.32.02.51-.1.19-.15.31-.29.48l-.44.51c-.14.14-.3.3-.13.58.17.28.75 1.24 1.61 2 1.11.99 2.04 1.3 2.33 1.44.28.14.45.12.62-.07.17-.19.71-.83.9-1.12.19-.28.38-.23.63-.14.26.1 1.64.77 1.92.91.28.14.47.21.54.33.07.12.07.69-.18 1.38Z"/></symbol>
+</svg>
+
+<header>
+  <div class="wrap nav">
+    <a href="#inicio" class="logo">RUSTI<b>CANDO</b></a>
+    <ul>
+      <li><a href="#catalogo">Catálogo</a></li>
+      <li><a href="#a-medida">A medida</a></li>
+      <li><a href="#maderas">Maderas</a></li>
+      <li><a href="#proceso">Proceso</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <a class="nav-cta wa" data-msg="¡Hola Rusticando! Quiero hacer una consulta." href="#"><svg><use href="#i-wa"/></svg>098 923 479</a>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-top mono"><span>Taller · San José, Uruguay</span><span>Muebles en madera maciza</span><span>Envíos a todo el país</span></div>
+      <h1 class="display">Rusticando</h1>
+      <div class="hero-body">
+        <div class="hero-copy">
+          <p>Tablones de ciprés, pino marítimo y cedro de hasta dos pulgadas de espesor. Respetamos el borde vivo y la veta de cada árbol, así que no hay dos muebles iguales.</p>
+          <div class="btns">
+            <a class="btn btn-wa wa" data-msg="¡Hola! Quiero pedir un presupuesto para un mueble." href="#"><svg><use href="#i-wa"/></svg>Pedir presupuesto</a>
+            <a class="btn btn-line" href="#catalogo">Ver trabajos ↓</a>
+          </div>
+        </div>
+        <div class="hero-photo">
+          <div class="ph"><img src="img/ratona-cipres.jpg" alt="Mesa ratona de ciprés de 1,30 m con borde natural, junto a un sillón" fetchpriority="high"></div>
+          <div class="dim"><span>1,30 m</span></div>
+          <div class="dim-v"><span>2" espesor</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true"><div>Ciprés<i>✦</i>Pino marítimo<i>✦</i>Cedro azul<i>✦</i>2 pulgadas<i>✦</i>Borde vivo<i>✦</i>Hecho a mano en San José<i>✦</i>Envíos a todo Uruguay<i>✦</i>Ciprés<i>✦</i>Pino marítimo<i>✦</i>Cedro azul<i>✦</i>2 pulgadas<i>✦</i>Borde vivo<i>✦</i>Hecho a mano en San José<i>✦</i>Envíos a todo Uruguay<i>✦</i></div></div>
+
+  <section id="catalogo" class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">01 /</span>
+        <h2 class="display">Catálogo</h2>
+        <p>Piezas que ya están en sus casas nuevas. Cualquiera se puede volver a hacer con tu medida.</p>
+      </div>
+      <div class="filters" role="group" aria-label="Filtrar por tipo">
+        <button class="chip" data-f="all" aria-pressed="true">Todo</button>
+        <button class="chip" data-f="ratona" aria-pressed="false">Ratonas</button>
+        <button class="chip" data-f="barra" aria-pressed="false">Barras · mesadas</button>
+        <button class="chip" data-f="rack" aria-pressed="false">Racks TV</button>
+        <button class="chip" data-f="mesa" aria-pressed="false">Mesas</button>
+      </div>
+
+      <div class="grid" id="grid">
+        <article class="tag reveal" data-cat="ratona">
+          <div class="tag-top mono"><span>N.º 001</span><span class="hole"></span></div>
+          <button class="ph"><img loading="lazy" src="img/ratona-pino.jpg" alt="Mesa ratona en pino marítimo"></button>
+          <div class="tag-body"><h3>Ratona pino marítimo</h3>
+            <dl class="specs"><dt>Madera</dt><dd>Pino marítimo</dd><dt>Terminación</dt><dd>Sedosa · Borma</dd><dt>Envío</dt><dd>Todo Uruguay</dd></dl>
+            <div class="tag-foot"><span class="price">$5.900</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
+        </article>
+        <article class="tag reveal" data-cat="ratona">
+          <div class="tag-top mono"><span>N.º 002</span><span class="hole"></span></div>
+          <button class="ph"><img loading="lazy" src="img/ratona-cipres.jpg" alt="Mesa ratona de ciprés junto a un sillón"></button>
+          <div class="tag-body"><h3>Ratona ciprés</h3>
+            <dl class="specs"><dt>Madera</dt><dd>Ciprés</dd><dt>Espesor</dt><dd>2"</dd><dt>Medida</dt><dd>1,30 × 0,85 m</dd></dl>
+            <div class="tag-foot"><span class="price soft">pieza única</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
+        </article>
+        <article class="tag reveal" data-cat="ratona">
+          <div class="tag-top mono"><span>N.º 003</span><span class="hole"></span></div>
+          <button class="ph"><img loading="lazy" src="img/ratona-cedro.jpg" alt="Mesa ratona única en cedro azul"></button>
+          <div class="tag-body"><h3>Ratona cedro azul</h3>
+            <dl class="specs"><dt>Madera</dt><dd>Cedro azul</dd><dt>Formato</dt><dd>Borde vivo</dd><dt>Envío</dt><dd>Todo Uruguay</dd></dl>
+            <div class="tag-foot"><span class="price soft">pieza única</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
+        </article>
+        <article class="tag reveal" data-cat="barra">
+          <div class="tag-top mono"><span>N.º 004</span><span class="hole"></span></div>
+          <button class="ph"><img loading="lazy" src="img/barra-hierro.jpg" alt="Barra de madera maciza con base de hierro en un balcón, con dos banquetas"></button>
+          <div class="tag-body"><h3>Barra base de hierro</h3>
+            <dl class="specs"><dt>Tapa</dt><dd>100% maciza</dd><dt>Base</dt><dd>Hierro</dd><dt>Medida</dt><dd>A medida</dd></dl>
+            <div class="tag-foot"><span class="price soft">a medida</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
+        </article>
+        <article class="tag reveal" data-cat="barra">
+          <div class="tag-top mono"><span>N.º 005</span><span class="hole"></span></div>
+          <button class="ph"><img loading="lazy" src="img/mesada-cipres.jpg" alt="Tapa de mesada de ciprés frente a una pared de ladrillo"></button>
+          <div class="tag-body"><h3>Tapa de mesada ciprés</h3>
+            <dl class="specs"><dt>Madera</dt><dd>Ciprés</dd><dt>Espesor</dt><dd>2"</dd><dt>Uso</dt><dd>Mesada · barra</dd></dl>
+            <div class="tag-foot"><span class="price soft">a medida</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
+        </article>
+        <article class="tag reveal" data-cat="barra">
+          <div class="tag-top mono"><span>N.º 006</span><span class="hole"></span></div>
+          <button class="ph"><img loading="lazy" src="img/barras-maritimo.jpg" alt="Barras de madera maciza en pino marítimo"></button>
+          <div class="tag-body"><h3>Barras pino marítimo</h3>
+            <dl class="specs"><dt>Madera</dt><dd>Pino marítimo</dd><dt>Uso</dt><dd>Barra · desayunador</dd><dt>Medida</dt><dd>A medida</dd></dl>
+            <div class="tag-foot"><span class="price soft">a medida</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
+        </article>
+        <article class="tag reveal" data-cat="rack">
+          <div class="tag-top mono"><span>N.º 007</span><span class="hole"></span></div>
+          <button class="ph"><img loading="lazy" src="img/rack-cipres.jpg" alt="Rack de TV en madera maciza de ciprés instalado en un living"></button>
+          <div class="tag-body"><h3>Rack TV ciprés</h3>
+            <dl class="specs"><dt>Madera</dt><dd>Ciprés</dd><dt>Espesor</dt><dd>2"</dd><dt>Medida</dt><dd>170 × 35 × 70 cm</dd></dl>
+            <div class="tag-foot"><span class="price soft">a medida</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
+        </article>
+        <article class="tag reveal" data-cat="mesa">
+          <div class="tag-top mono"><span>N.º 008</span><span class="hole"></span></div>
+          <button class="ph"><img loading="lazy" src="img/mesas-stock.jpg" alt="Mesas de comedor de madera maciza en el taller"></button>
+          <div class="tag-body"><h3>Mesas de comedor</h3>
+            <dl class="specs"><dt>Estado</dt><dd>En stock</dd><dt>Entrega</dt><dd>Inmediata</dd><dt>Medidas</dt><dd>Consultar</dd></dl>
+            <div class="tag-foot"><span class="price soft">en stock</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
+        </article>
+      </div>
+      <div class="more"><a class="btn" href="https://www.instagram.com/rusticando.uy/" target="_blank" rel="noopener">Más trabajos en Instagram ↗</a></div>
+    </div>
+  </section>
+
+  <section class="manifesto sec">
+    <div class="wrap reveal">
+      <p>Cada <span class="pill"><img src="img/mesada-lambertiana.jpg" alt=""></span> tablón tiene <span class="it">su propia</span> historia. Nosotros la <span class="scribble">terminamos<svg viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true"><path d="M20 58 C 40 12, 250 6, 284 40 C 304 70, 210 96, 120 92 C 50 89, 6 72, 22 44 C 34 26, 90 16, 150 14"/></svg></span> a mano.</p>
+      <div class="manifesto-foot mono"><span>Sin aglomerado</span><span>Sin enchapados</span><span>Madera 100% maciza</span></div>
+    </div>
+  </section>
+
+  <section id="a-medida" class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">02 /</span>
+        <h2 class="display">A medida</h2>
+        <p>Si lo imaginás, lo podemos hacer.</p>
+      </div>
+      <div class="custom reveal">
+        <div class="ph"><img loading="lazy" src="img/acabados.jpg" alt="Mesa ratona en pino marítimo con acabado natural"></div>
+        <div class="custom-txt">
+          <h2 class="display">Tu idea, <span class="it">nuestro taller.</span></h2>
+          <p>Contanos qué necesitás y dónde va a estar. Elegís la madera, las medidas y el acabado, y lo fabricamos pieza por pieza.</p>
+          <ul class="checks"><li>Barras y desayunadores</li><li>Mesas ratonas y de comedor</li><li>Racks de TV y escritorios</li><li>Mesadas y tablas</li></ul>
+          <a class="btn btn-wa wa" data-msg="¡Hola! Quiero un mueble a medida. Les cuento mi idea:" href="#"><svg><use href="#i-wa"/></svg>Contanos tu idea</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="maderas" class="sec" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">03 /</span>
+        <h2 class="display">Maderas</h2>
+        <p>Trabajamos tablones gruesos que respetan el borde y la veta natural de cada árbol.</p>
+      </div>
+      <div class="woods">
+        <div class="wood reveal"><div class="slice s1"></div><h3>Ciprés</h3><span class="mono">También lambertiana</span><p>Aromático, liviano y de veta marcada. Ideal para mesadas, ratonas y racks.</p></div>
+        <div class="wood reveal"><div class="slice s2"></div><h3>Pino marítimo</h3><span class="mono">Cálido · con nudos</span><p>Mucho carácter: nudos y dibujos que hacen única cada pieza.</p></div>
+        <div class="wood reveal"><div class="slice s3"></div><h3>Cedro azul</h3><span class="mono">Para piezas especiales</span><p>Tonos profundos y una veta muy elegante.</p></div>
+      </div>
+      <div class="finish reveal"><strong>Elegí el acabado</strong><span>del más natural al más oscuro, siempre sedoso al tacto.</span></div>
+    </div>
+  </section>
+
+  <section id="proceso" class="sec process">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">04 /</span>
+        <h2 class="display">Cómo encargar</h2>
+        <p>Cuatro pasos, desde tu mensaje hasta tu casa.</p>
+      </div>
+      <ol class="steps">
+        <li class="reveal"><b>01</b><h3>Escribinos</h3><p>Por WhatsApp o Instagram, con tu idea, las medidas y una foto del espacio.</p></li>
+        <li class="reveal"><b>02</b><h3>Madera y acabado</h3><p>Te asesoramos y te pasamos un presupuesto sin compromiso.</p></li>
+        <li class="reveal"><b>03</b><h3>Manos a la obra</h3><p>Elegimos el tablón y lo trabajamos artesanalmente en el taller.</p></li>
+        <li class="reveal"><b>04</b><h3>A tu casa</h3><p>Entrega en tiempo y forma, con envíos a todo Uruguay.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="quote">
+    <div class="wrap reveal">
+      <span class="q" aria-hidden="true">“</span>
+      <div>
+        <blockquote>Quedó divino el rack, justo lo que quería. Diego, muy profesional y perfeccionista. ¡Lo recomiendo!</blockquote>
+        <cite class="mono">— Clienta · Rack TV en ciprés</cite>
+      </div>
+    </div>
+  </section>
+
+  <section id="preguntas" class="sec">
+    <div class="wrap faq-grid">
+      <div><span class="mono" style="color:var(--mark)">05 /</span><h2 class="display">Preguntas</h2></div>
+      <div>
+        <details><summary>¿Hacen muebles a medida?</summary><p>Sí. Cada mueble se adapta en medidas, madera y acabado. Escribinos con tu idea y te pasamos presupuesto.</p></details>
+        <details><summary>¿Hacen envíos?</summary><p>Sí, enviamos a todo Uruguay. El taller está en San José.</p></details>
+        <details><summary>¿Qué maderas usan?</summary><p>Principalmente ciprés (incluida la variedad lambertiana), pino marítimo y cedro azul, siempre madera 100% maciza.</p></details>
+        <details><summary>¿Tienen muebles en stock?</summary><p>A veces tenemos piezas listas, como mesas y tablones. Preguntanos por WhatsApp qué hay disponible ahora.</p></details>
+        <details><summary>¿Cómo cuido mi mueble?</summary><p>Limpialo con un paño seco o apenas húmedo y evitá apoyar objetos muy calientes directamente. Con los años se le puede renovar la terminación. Te damos los detalles con la entrega.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" class="contact">
+    <div class="wrap">
+      <span class="mono">06 / Contacto · respondemos por WhatsApp</span>
+      <a class="phone wa" data-msg="¡Hola Rusticando! Quiero hacer una consulta." href="#">098 923 479</a>
+      <div class="contact-row">
+        <a class="wa" data-msg="¡Hola Rusticando! Quiero hacer una consulta." href="#"><span class="mono">WhatsApp</span><strong>Presupuestos ↗</strong></a>
+        <a href="https://www.instagram.com/rusticando.uy/" target="_blank" rel="noopener"><span class="mono">Instagram</span><strong>@rusticando.uy ↗</strong></a>
+        <div><span class="mono">Taller</span><strong>San José, Uruguay</strong></div>
+      </div>
+    </div>
+    <div class="bigmark" aria-hidden="true">Rusticando</div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="y"></span> Rusticando · Muebles artesanales en madera maciza</span>
+    <span>Hecho en San José 🇺🇾</span>
+  </div>
+</footer>
+
+<a class="fab wa" data-msg="¡Hola Rusticando! Quiero hacer una consulta." href="#" aria-label="Escribinos por WhatsApp"><svg><use href="#i-wa"/></svg></a>
+
+<dialog id="lb"><button aria-label="Cerrar">×</button><img alt=""><p></p></dialog>
+
+<script>
+const PHONE = "59898923479";
+const waUrl = msg => `https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`;
+
+// WhatsApp links; product tags prefill the product name
+document.querySelectorAll('a.wa').forEach(a => {
+  const tag = a.closest('.tag');
+  const msg = a.dataset.msg || (tag ? `¡Hola! Me interesa: ${tag.querySelector('h3').textContent}. ¿Me pasan más info?` : '¡Hola Rusticando!');
+  a.href = waUrl(msg);
+  a.target = '_blank';
+  a.rel = 'noopener';
+});
+
+// Wood-grain fallback when a photo is missing
+document.querySelectorAll('.ph img').forEach(img => {
+  const mark = () => img.closest('.ph').classList.add('missing');
+  if (img.complete && !img.naturalWidth) mark();
+  img.addEventListener('error', mark);
+});
+
+// Catalog filters
+const chips = document.querySelectorAll('.chip');
+chips.forEach(c => c.addEventListener('click', () => {
+  chips.forEach(x => x.setAttribute('aria-pressed', x === c));
+  document.querySelectorAll('#grid .tag').forEach(tag => {
+    tag.hidden = c.dataset.f !== 'all' && tag.dataset.cat !== c.dataset.f;
+  });
+}));
+
+// Lightbox
+const lb = document.getElementById('lb');
+document.querySelectorAll('.tag .ph').forEach(btn => btn.addEventListener('click', () => {
+  if (btn.classList.contains('missing')) return;
+  const img = btn.querySelector('img');
+  lb.querySelector('img').src = img.src;
+  lb.querySelector('img').alt = img.alt;
+  lb.querySelector('p').textContent = btn.closest('.tag').querySelector('h3').textContent;
+  lb.showModal();
+}));
+lb.addEventListener('click', e => { if (e.target !== lb.querySelector('img')) lb.close(); });
+
+// Scroll reveal (content stays visible if the observer never fires)
+const reveals = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  document.documentElement.classList.add('anim');
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold: .12});
+  reveals.forEach(el => io.observe(el));
+  setTimeout(() => reveals.forEach(el => el.classList.add('in')), 2500);
+}
+
+document.getElementById('y').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
