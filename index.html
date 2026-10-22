@@ -94,6 +94,8 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:va
 .ph{position:relative;overflow:hidden;background:
   repeating-linear-gradient(94deg,rgba(255,255,255,.07) 0 2px,transparent 2px 10px),
   linear-gradient(135deg,#c89a68,#8f5f36)}
+.ph video{width:100%;height:100%;object-fit:cover;display:block}
+.vid-tag{margin-left:auto;margin-right:12px;color:var(--mark);font-weight:700}
 .ph img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1),filter .4s}
 .ph.missing img{display:none}
 
@@ -119,12 +121,12 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:va
 @media (max-width:640px){.filters{width:100%}.chip{flex:1 1 33%;border-bottom:1.5px solid var(--ink)}}
 
 /* Catalog: lumber-tag cards */
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,2.4vw,32px)}
-@media (max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,32px)}
+@media (max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:600px){.grid{grid-template-columns:1fr}}
 .tag{background:#f7f1e6;border:1.5px solid var(--ink);display:flex;flex-direction:column;position:relative;transition:transform .3s,box-shadow .3s}
 .tag:hover{transform:rotate(-.6deg) translateY(-4px);box-shadow:8px 8px 0 var(--ink)}
-.tag:nth-child(even):hover{transform:rotate(.6deg) translateY(-4px)}
+.tag:nth-child(3n+2):hover{transform:rotate(.6deg) translateY(-4px)}
 .tag:hover .ph img{transform:scale(1.05)}
 .tag-top{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1.5px solid var(--ink)}
 .tag-top .hole{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);background:var(--dust)}
@@ -339,28 +341,35 @@ dialog button{position:fixed;top:12px;right:18px;background:none;border:0;color:
             <div class="tag-foot"><span class="price soft">a medida</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
         </article>
         <article class="tag reveal" data-cat="barra">
-          <div class="tag-top mono"><span>N.º 005</span><span class="hole"></span></div>
+          <div class="tag-top mono"><span>N.º 005</span><span class="vid-tag">▶ Video</span><span class="hole"></span></div>
+          <div class="ph"><video src="img/mesada-lambertiana.mp4" poster="img/mesada-lambertiana-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Video de una mesada de ciprés lambertiana de 2,50 m con base de hierro"></video></div>
+          <div class="tag-body"><h3>Mesada lambertiana</h3>
+            <dl class="specs"><dt>Madera</dt><dd>Ciprés lambertiana</dd><dt>Espesor</dt><dd>2"</dd><dt>Medida</dt><dd>2,50 × 0,70 m</dd></dl>
+            <div class="tag-foot"><span class="price soft">a medida</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
+        </article>
+        <article class="tag reveal" data-cat="barra">
+          <div class="tag-top mono"><span>N.º 006</span><span class="hole"></span></div>
           <button class="ph"><img loading="lazy" src="img/mesada-cipres.jpg" alt="Tapa de mesada de ciprés frente a una pared de ladrillo"></button>
           <div class="tag-body"><h3>Tapa de mesada ciprés</h3>
             <dl class="specs"><dt>Madera</dt><dd>Ciprés</dd><dt>Espesor</dt><dd>2"</dd><dt>Uso</dt><dd>Mesada · barra</dd></dl>
             <div class="tag-foot"><span class="price soft">a medida</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
         </article>
         <article class="tag reveal" data-cat="barra">
-          <div class="tag-top mono"><span>N.º 006</span><span class="hole"></span></div>
+          <div class="tag-top mono"><span>N.º 007</span><span class="hole"></span></div>
           <button class="ph"><img loading="lazy" src="img/barras-maritimo.jpg" alt="Barras de madera maciza en pino marítimo"></button>
           <div class="tag-body"><h3>Barras pino marítimo</h3>
             <dl class="specs"><dt>Madera</dt><dd>Pino marítimo</dd><dt>Uso</dt><dd>Barra · desayunador</dd><dt>Medida</dt><dd>A medida</dd></dl>
             <div class="tag-foot"><span class="price soft">a medida</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
         </article>
         <article class="tag reveal" data-cat="rack">
-          <div class="tag-top mono"><span>N.º 007</span><span class="hole"></span></div>
+          <div class="tag-top mono"><span>N.º 008</span><span class="hole"></span></div>
           <button class="ph"><img loading="lazy" src="img/rack-cipres.jpg" alt="Rack de TV en madera maciza de ciprés instalado en un living"></button>
           <div class="tag-body"><h3>Rack TV ciprés</h3>
             <dl class="specs"><dt>Madera</dt><dd>Ciprés</dd><dt>Espesor</dt><dd>2"</dd><dt>Medida</dt><dd>170 × 35 × 70 cm</dd></dl>
             <div class="tag-foot"><span class="price soft">a medida</span><a class="ask wa" href="#"><svg><use href="#i-wa"/></svg>Consultar</a></div></div>
         </article>
         <article class="tag reveal" data-cat="mesa">
-          <div class="tag-top mono"><span>N.º 008</span><span class="hole"></span></div>
+          <div class="tag-top mono"><span>N.º 009</span><span class="hole"></span></div>
           <button class="ph"><img loading="lazy" src="img/mesas-stock.jpg" alt="Mesas de comedor de madera maciza en el taller"></button>
           <div class="tag-body"><h3>Mesas de comedor</h3>
             <dl class="specs"><dt>Estado</dt><dd>En stock</dd><dt>Entrega</dt><dd>Inmediata</dd><dt>Medidas</dt><dd>Consultar</dd></dl>
@@ -497,6 +506,9 @@ document.querySelectorAll('.ph img').forEach(img => {
   img.addEventListener('error', mark);
 });
 
+// Respect reduced motion for the catalog video
+if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('video[autoplay]').forEach(v => { v.removeAttribute('autoplay'); v.pause(); v.controls = true; });
+
 // Catalog filters
 const chips = document.querySelectorAll('.chip');
 chips.forEach(c => c.addEventListener('click', () => {
@@ -508,7 +520,7 @@ chips.forEach(c => c.addEventListener('click', () => {
 
 // Lightbox
 const lb = document.getElementById('lb');
-document.querySelectorAll('.tag .ph').forEach(btn => btn.addEventListener('click', () => {
+document.querySelectorAll('.tag button.ph').forEach(btn => btn.addEventListener('click', () => {
   if (btn.classList.contains('missing')) return;
   const img = btn.querySelector('img');
   lb.querySelector('img').src = img.src;
