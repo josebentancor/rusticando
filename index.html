@@ -80,11 +80,11 @@ header{position:sticky;top:0;z-index:50;background:rgba(235,231,225,.92);backdro
 
 /* Hero */
 .hero{background:var(--green);color:#efe9dc;padding:clamp(40px,6vw,80px) 0 clamp(56px,8vw,96px);overflow:hidden}
-.hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}
+.hero-grid > div{max-width:920px}
 .hero .eyebrow{color:var(--sage)}
 .hero h1{font-size:clamp(2.2rem,4.6vw,3.9rem);line-height:1.06;color:#efe9dc}
 .hero h1 em{font-style:italic;color:var(--sage)}
-.hero p{font-size:1.15rem;opacity:.9;max-width:44ch;margin:22px 0 28px}
+.hero p{font-size:1.2rem;opacity:.9;max-width:52ch;margin:22px 0 28px}
 .ctas{display:flex;flex-wrap:wrap;gap:12px}
 .chips-hero{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
 .chips-hero a{border:1px solid rgba(239,233,220,.4);border-radius:999px;padding:7px 14px;font-size:.92rem;text-decoration:none;color:#efe9dc}
@@ -92,7 +92,6 @@ header{position:sticky;top:0;z-index:50;background:rgba(235,231,225,.92);backdro
 .arch{position:relative;aspect-ratio:4/5;max-height:620px;border-radius:999px 999px var(--r) var(--r);overflow:hidden;background:var(--green-2)}
 .arch img{width:100%;height:100%;object-fit:cover}
 .arch-badge{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);background:var(--paper);color:var(--brown-d);border-radius:999px;padding:10px 18px;font:600 .95rem var(--display);font-variation-settings:"SOFT" 100;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2)}
-@media (max-width:860px){.hero-grid{grid-template-columns:1fr}.arch{max-width:440px;margin:0 auto;aspect-ratio:1/1.1}}
 
 /* Catalog */
 .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px}
@@ -322,10 +321,6 @@ footer .row img{height:28px;width:auto}
           <a href="#catalogo" data-go="rack">Racks</a>
           <a href="#catalogo" data-go="tabla">Tablas para picar</a>
         </nav>
-      </div>
-      <div class="arch">
-        <img src="img/ratona-cipres.jpg" alt="Mesa ratona de ciprés con borde vivo en un living" fetchpriority="high">
-        <span class="arch-badge">Piezas únicas, hechas a mano</span>
       </div>
     </div>
   </section>
