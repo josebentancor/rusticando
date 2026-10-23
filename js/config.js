@@ -8,6 +8,11 @@ window.RUSTICANDO_CONFIG = {
   loginDomain: 'rusticando.uy'
 };
 
+// La copia de GitHub Pages lleva al dominio propio (Cloudflare ya redirige pages.dev y www por su cuenta)
+if (location.hostname === 'josebentancor.github.io') {
+  location.replace('https://rusticandouy.com' + location.pathname.replace(/^\/rusticando/, '') + location.search + location.hash);
+}
+
 // "admin" -> "admin@rusticando.uy"; un correo completo queda igual
 window.rusticandoLoginEmail = user => {
   const u = String(user || '').trim().toLowerCase();
