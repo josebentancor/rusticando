@@ -146,6 +146,13 @@ header{position:sticky;top:0;z-index:50;background:rgba(235,231,225,.92);backdro
 .wood h3{font-size:2rem;color:#efe9dc;margin-bottom:8px}
 .wood p{margin:0;opacity:.85}
 @media (max-width:760px){.woods{grid-template-columns:1fr}.wood{grid-template-columns:1fr;justify-items:start}}
+.sub-h{font-size:clamp(1.6rem,3.4vw,2.2rem);color:#efe9dc;margin:clamp(40px,6vw,64px) 0 22px}
+.bordes{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,48px)}
+.borde{background:var(--paper);color:var(--ink);border-radius:var(--r);padding:clamp(20px,3vw,30px);display:grid;grid-template-columns:minmax(120px,200px) 1fr;gap:22px;align-items:center}
+.borde svg{width:100%;height:auto;display:block}
+.borde h4{font:700 1.6rem/1.05 var(--display);font-variation-settings:"SOFT" 100,"WONK" 1;color:var(--brown-d);margin:0 0 6px}
+.borde p{margin:0;color:var(--muted)}
+@media (max-width:760px){.bordes{grid-template-columns:1fr}.borde{grid-template-columns:1fr}.borde svg{max-width:240px}}
 
 /* Acabados */
 .acabados-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -303,7 +310,7 @@ footer .row img{height:28px;width:auto}
       <div>
         <span class="eyebrow">Taller en San José, Uruguay</span>
         <h1>Muebles con <em>alma de árbol.</em></h1>
-        <p>Ciprés y pino marítimo trabajados a mano, con borde vivo y la veta de cada árbol. Cada pieza es única y la enviamos a todo el país.</p>
+        <p>Ciprés y pino marítimo trabajados a mano, con borde vivo o recto y la veta de cada árbol. Cada pieza es única y la enviamos a todo el país.</p>
         <div class="ctas">
           <a class="pill pill-sage wa" data-msg="¡Hola! Quiero consultar por un mueble." href="#"><svg><use href="#i-wa"/></svg>Escribinos por WhatsApp</a>
           <a class="pill pill-line ig" href="#"><svg><use href="#i-ig"/></svg>Seguinos en Instagram</a>
@@ -362,11 +369,29 @@ footer .row img{height:28px;width:auto}
       <div class="sec-head">
         <span class="eyebrow">Materia prima</span>
         <h2>Nuestras maderas</h2>
-        <p>Trabajamos tablones macizos de dos maderas, respetando el borde y la veta natural de cada árbol.</p>
+        <p>Trabajamos tablones macizos de dos maderas, respetando la veta natural de cada árbol, con el borde que prefieras.</p>
       </div>
       <div class="woods">
         <div class="wood reveal"><div class="slice s-cipres" aria-hidden="true"></div><div><h3>Ciprés</h3><p>Aromático, liviano y de veta marcada. Ideal para mesadas, ratonas, racks y escritorios.</p></div></div>
         <div class="wood reveal"><div class="slice s-pino" aria-hidden="true"></div><div><h3>Pino marítimo</h3><p>Cálido y con mucho carácter: nudos y dibujos que hacen única cada pieza.</p></div></div>
+      </div>
+
+      <h3 class="sub-h">Dos tipos de borde</h3>
+      <div class="bordes">
+        <div class="borde reveal">
+          <svg viewBox="0 0 240 110" role="img" aria-label="Tablón visto desde arriba con borde irregular, siguiendo la forma del tronco">
+            <defs><pattern id="veta-v" width="240" height="14" patternUnits="userSpaceOnUse"><rect width="240" height="14" fill="#d9a96d"/><path d="M0 7 C60 3 120 11 240 6" stroke="#b9824a" stroke-width="2" fill="none"/></pattern></defs>
+            <path d="M14 22 C40 8 70 18 98 12 C130 5 160 16 190 9 C210 5 222 12 228 20 L228 88 C214 98 196 92 172 100 C140 108 112 96 84 103 C56 109 34 98 14 92 C8 70 12 44 14 22 Z" fill="url(#veta-v)" stroke="#5e4538" stroke-width="3"/>
+          </svg>
+          <div><h4>Borde vivo</h4><p>Respeta la forma natural del tronco: cada canto es irrepetible y le da a la pieza un aire rústico y orgánico.</p></div>
+        </div>
+        <div class="borde reveal">
+          <svg viewBox="0 0 240 110" role="img" aria-label="Tablón visto desde arriba con bordes rectos y prolijos">
+            <defs><pattern id="veta-r" width="240" height="14" patternUnits="userSpaceOnUse"><rect width="240" height="14" fill="#d9a96d"/><path d="M0 7 C60 3 120 11 240 6" stroke="#b9824a" stroke-width="2" fill="none"/></pattern></defs>
+            <rect x="12" y="14" width="216" height="82" rx="4" fill="url(#veta-r)" stroke="#5e4538" stroke-width="3"/>
+          </svg>
+          <div><h4>Borde recto</h4><p>Cantos rectos y prolijos, para un estilo más moderno que se adapta a cualquier ambiente.</p></div>
+        </div>
       </div>
     </div>
   </section>
@@ -414,7 +439,7 @@ footer .row img{height:28px;width:auto}
       </div>
       <ol class="steps">
         <li class="reveal"><b>1</b><h3>Escribinos</h3><p>Por WhatsApp o Instagram, con tu idea, las medidas y una foto del espacio.</p></li>
-        <li class="reveal"><b>2</b><h3>Madera y acabado</h3><p>Te asesoramos para elegir entre ciprés o pino marítimo y la terminación ideal.</p></li>
+        <li class="reveal"><b>2</b><h3>Madera, borde y acabado</h3><p>Te asesoramos para elegir ciprés o pino marítimo, borde vivo o recto y la terminación ideal.</p></li>
         <li class="reveal"><b>3</b><h3>Manos a la obra</h3><p>Elegimos el tablón y lo trabajamos artesanalmente en el taller.</p></li>
         <li class="reveal"><b>4</b><h3>A tu casa</h3><p>Entrega en tiempo y forma, con envíos a todo Uruguay.</p></li>
       </ol>
@@ -438,6 +463,7 @@ footer .row img{height:28px;width:auto}
         <details><summary>¿Cuánto cuesta un mueble?</summary><p>Cada pieza es única: depende del tablón, la madera, las medidas y el acabado. Escribinos por WhatsApp con la pieza que te gustó o tu idea y te pasamos el precio.</p></details>
         <details><summary>¿Hacen muebles a medida?</summary><p>Sí. Cada mueble se adapta en medidas, madera y acabado.</p></details>
         <details><summary>¿Qué maderas usan?</summary><p>Ciprés y pino marítimo, siempre en madera 100% maciza.</p></details>
+        <details><summary>¿Qué tipos de borde hacen?</summary><p>Dos: borde vivo, que respeta la forma natural del tronco, y borde recto, con cantos prolijos para un estilo más moderno. Cualquier pieza se puede pedir con uno u otro.</p></details>
         <details><summary>¿Sirven para exterior?</summary><p>Sí, con acabado poliuretánico, que resiste el desgaste, la humedad y las manchas.</p></details>
         <details><summary>¿Hacen envíos?</summary><p>Sí, enviamos a todo Uruguay. El taller está en San José.</p></details>
         <details><summary>¿Cómo cuido mi mueble?</summary><p>Limpialo con un paño seco o apenas húmedo y evitá apoyar objetos muy calientes directamente. Te damos los detalles con la entrega.</p></details>
