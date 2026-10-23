@@ -9,12 +9,12 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co; media-src 'self' blob: https://*.supabase.co; connect-src https://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --coal:#16130f; --dust:#efe6d6; --paper:#f7f1e6; --pine:#e3a33f; --mark:#c8442b; --ok:#1f7a45; --wa:#1fa855;
+  --coal:#1f3a2e; --dust:#ebe7e1; --paper:#f6f2ec; --pine:#c9d6a3; --mark:#b5482f; --ok:#1f7a45; --wa:#1fa855;
   --ink:#16130f; --muted:#6d6153; --line:rgba(22,19,15,.18);
-  --display:"Big Shoulders Display",Impact,sans-serif; --mono:"Space Mono",ui-monospace,monospace; --sans:"Archivo",system-ui,sans-serif;
+  --display:"Fraunces",Georgia,serif; --mono:"Karla",system-ui,sans-serif; --sans:"Karla",system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--dust);color:var(--ink);font:17px/1.5 var(--sans)}
@@ -24,7 +24,8 @@ header{background:var(--coal);color:var(--dust);position:sticky;top:0;z-index:10
 header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:58px}
 .logo{font:900 1.5rem var(--display);letter-spacing:.04em}
 .logo b{color:var(--pine)}
-h1,h2,h3{font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.95;margin:0}
+h1,h2,h3{font-family:var(--display);font-variation-settings:"SOFT" 100,"WONK" 1;font-weight:700;line-height:1.02;margin:0;color:#5e4538}
+.logo img{height:30px;width:auto;display:block}
 h1{font-size:clamp(2.4rem,8vw,3.4rem)}
 h2{font-size:clamp(1.8rem,6vw,2.3rem)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;font:700 .95rem var(--sans);border:2px solid var(--ink);background:var(--ink);color:var(--dust);cursor:pointer;text-decoration:none;border-radius:6px}
@@ -103,7 +104,7 @@ details.more .full{grid-column:1/-1}
 </head>
 <body>
 <header><div class="wrap">
-  <span class="logo">RUSTI<b>CANDO</b></span>
+  <span class="logo"><img src="../img/marca/logo-claro.png" alt="Rusticando" width="920" height="200"></span>
   <div style="display:flex;gap:8px">
     <a class="btn light" href="../" style="color:var(--dust);padding:8px 12px;font-size:.85rem">Ver la web</a>
     <button class="btn light" id="logout" style="color:var(--dust);padding:8px 12px;font-size:.85rem" hidden>Salir</button>
@@ -148,11 +149,11 @@ details.more .full{grid-column:1/-1}
         <div class="step">
           <b><span>2</span>¿Qué es?</b>
           <div class="tiles" id="tiles" role="group" aria-label="Tipo de pieza">
-            <button type="button" class="tile" data-c="ratona">Mesa ratona</button>
-            <button type="button" class="tile" data-c="barra">Barra o mesada</button>
-            <button type="button" class="tile" data-c="rack">Rack de TV</button>
-            <button type="button" class="tile" data-c="mesa">Mesa</button>
-            <button type="button" class="tile" data-c="otro">Otra cosa</button>
+            <button type="button" class="tile" data-c="ratona">Ratona</button>
+            <button type="button" class="tile" data-c="barra">Barra / Mesada</button>
+            <button type="button" class="tile" data-c="mesa">Mesa comedor / Escritorio</button>
+            <button type="button" class="tile" data-c="rack">Rack</button>
+            <button type="button" class="tile" data-c="tabla">Tabla para picar</button>
           </div>
         </div>
 
@@ -162,17 +163,15 @@ details.more .full{grid-column:1/-1}
         </div>
 
         <details class="more" id="more">
-          <summary>Agregar detalles (opcional): madera, medidas, precio, video</summary>
+          <summary>Agregar detalles (opcional): madera, medidas, video</summary>
           <div class="inner">
             <label class="f full">Madera<input id="f-wood" maxlength="60" placeholder="Ej.: Ciprés">
-              <span class="quick" data-for="f-wood"><button type="button">Ciprés</button><button type="button">Pino marítimo</button><button type="button">Cedro azul</button><button type="button">Ciprés lambertiana</button></span></label>
+              <span class="quick" data-for="f-wood"><button type="button">Ciprés</button><button type="button">Pino marítimo</button></span></label>
             <label class="f">Medida<input id="f-size" maxlength="40" placeholder="Ej.: 1,30 × 0,85 m"></label>
             <label class="f">Espesor<input id="f-thickness" maxlength="30" placeholder='Ej.: 2"'>
               <span class="quick" data-for="f-thickness"><button type="button">2"</button><button type="button">3"</button></span></label>
             <label class="f">Detalle<input id="f-detail" maxlength="60" placeholder="Ej.: Borde vivo">
               <span class="quick" data-for="f-detail"><button type="button">Borde vivo</button><button type="button">Base de hierro</button><button type="button">En stock</button></span></label>
-            <label class="f">Precio<input id="f-price" maxlength="30" placeholder="Ej.: $5.900">
-              <span class="hint">Si lo dejás vacío dice "a medida".</span></label>
             <label class="f full">Video (opcional)<input id="f-video" type="file" accept="video/mp4,video/quicktime">
               <span class="hint">Hasta 25 MB. Se ve en loop y sin sonido.</span></label>
           </div>

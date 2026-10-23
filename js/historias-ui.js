@@ -6,7 +6,8 @@
   if (!H.length || !row || !dlg) return;
 
   const IMAGE_MS = 5000;
-  const base = (h, n, ext) => `img/historias/${h.slug}/${String(n).padStart(2, '0')}.${ext}`;
+  // Each item carries its file number (n), since some stories were left out
+  const base = (h, i, ext) => `img/historias/${h.slug}/${h.items[i].n}.${ext}`;
   const $ = s => dlg.querySelector(s);
   let cur = { h: 0, i: 0 }, raf = 0, t0 = 0, elapsed = 0, paused = false, sound = false, video = null;
 
@@ -77,18 +78,20 @@
 
     if (item.v) {
       video = document.createElement('video');
-      video.src = base(hl, i + 1, 'mp4');
-      video.poster = base(hl, i + 1, 'jpg');
+      video.src = base(hl, i, 'mp4');
+      video.poster = base(hl, i, 'jpg');
       video.playsInline = true;
       video.muted = !sound;
       video.preload = 'auto';
       video.onended = next;
       video.onerror = next;
       media.append(video);
-      video.play().catch(() => { video.muted = true; sound = false; video.play().catch(() => {}); });
+      // If playback with sound is refused, retry muted — unless the viewer already moved on
+      const v = video;
+      v.play().catch(() => { if (video !== v) return; v.muted = true; sound = false; v.play().catch(() => {}); });
     } else {
       const img = document.createElement('img');
-      img.src = base(hl, i + 1, 'jpg');
+      img.src = base(hl, i, 'jpg');
       img.alt = `${hl.title}, historia ${i + 1}`;
       media.append(img);
     }
@@ -114,7 +117,7 @@
 
   function preload(h, i) {
     const n = i + 1 < H[h].items.length ? { h, i: i + 1 } : h + 1 < H.length ? { h: h + 1, i: 0 } : null;
-    if (n && !H[n.h].items[n.i].v) new Image().src = base(H[n.h], n.i + 1, 'jpg');
+    if (n && !H[n.h].items[n.i].v) new Image().src = base(H[n.h], n.i, 'jpg');
   }
 
   function next() {

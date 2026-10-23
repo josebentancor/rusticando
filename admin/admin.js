@@ -1,7 +1,8 @@
 const cfg = window.RUSTICANDO_CONFIG || {};
 const $ = id => document.getElementById(id);
 const BUCKET = 'productos';
-const CATEGORIES = { ratona: 'Mesa ratona', barra: 'Barra o mesada', rack: 'Rack de TV', mesa: 'Mesa', otro: 'Otra cosa' };
+const CATEGORIES = { ratona: 'Ratona', barra: 'Barra', mesa: 'Mesa', rack: 'Rack', tabla: 'Tabla para picar' };
+const CATEGORY_LABELS = { ratona: 'Ratona', barra: 'Barra / Mesada', mesa: 'Mesa comedor / Escritorio', rack: 'Rack', tabla: 'Tabla para picar' };
 const MAX_VIDEO = 25 * 1024 * 1024;
 const show = (id, on = true) => { $(id).hidden = !on; };
 // Paths saved as img/... live in the site itself, one folder up from /admin
@@ -99,7 +100,7 @@ function renderList() {
     pic.append(img, tags);
 
     const body = el('div', 'body');
-    body.append(el('h3', null, p.name), el('div', 'sub', [CATEGORIES[p.category] || 'Otra cosa', p.price].filter(Boolean).join(' · ')));
+    body.append(el('h3', null, p.name), el('div', 'sub', [CATEGORY_LABELS[p.category] || 'Ratona', p.wood].filter(Boolean).join(' · ')));
 
     const move = el('div', 'move');
     const up = btn('↑ Subir', 'light', () => swap(idx, idx - 1));
@@ -158,7 +159,7 @@ async function removePiece(p) {
 }
 
 // ---------- Editor ----------
-const extra = ['wood', 'thickness', 'size', 'detail', 'price'];
+const extra = ['wood', 'thickness', 'size', 'detail'];   // no prices: every piece is unique
 
 $('new-btn').addEventListener('click', () => openEditor(null));
 $('cancel-btn').addEventListener('click', closeEditor);
@@ -169,11 +170,11 @@ $('tiles').addEventListener('click', e => {
   const prevLabel = CATEGORIES[category];
   setCategory(t.dataset.c);
   // Suggest a name the first time, or if it still is the previous suggestion
-  if (!$('f-name').value.trim() || $('f-name').value === prevLabel) $('f-name').value = t.dataset.c === 'otro' ? '' : CATEGORIES[t.dataset.c];
+  if (!$('f-name').value.trim() || $('f-name').value === prevLabel) $('f-name').value = CATEGORIES[t.dataset.c];
   $('f-name').focus();
 });
 function setCategory(c) {
-  category = c in CATEGORIES ? c : 'otro';
+  category = c in CATEGORIES ? c : 'ratona';
   document.querySelectorAll('.tile').forEach(t => t.setAttribute('aria-pressed', t.dataset.c === category));
 }
 
