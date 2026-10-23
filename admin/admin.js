@@ -28,6 +28,18 @@ const sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
 let pieces = [];
 let editing = null;      // piece being edited, or null for a new one
 let category = 'ratona';
+let frame = { x: 50, y: 50, z: 1 };   // framing of the cover in the 4:5 card
+let extras = [];         // more photos/videos: { type, url } saved, or { type, file, preview } new
+let removedExtras = [];  // saved extras removed in this edit (their files are deleted after saving)
+const MAX_EXTRAS = 12;
+
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+const frameOf = p => ({ x: clamp(Number(p.frame_x ?? 50), 0, 100), y: clamp(Number(p.frame_y ?? 50), 0, 100), z: clamp(Number(p.frame_zoom ?? 1), 1, 3) });
+function applyFrame(node, f) {
+  node.style.setProperty('--fx', f.x + '%');
+  node.style.setProperty('--fy', f.y + '%');
+  node.style.setProperty('--fz', f.z);
+}
 
 // ---------- Session ----------
 async function start() {
@@ -94,7 +106,10 @@ function renderList() {
     const img = el('img');
     img.alt = ''; img.loading = 'lazy';
     if (p.image_url) img.src = mediaUrl(p.image_url);
+    applyFrame(pic, frameOf(p));
     const tags = el('div', 'tagline');
+    const nExtra = Array.isArray(p.extra) ? p.extra.length : 0;
+    if (nExtra) tags.append(el('span', 'chip-s', `+${nExtra} fotos/videos`));
     if (!p.visible) tags.append(el('span', 'chip-s warn', 'Oculta'));
     if (p.video_url) tags.append(el('span', 'chip-s', 'Video'));
     pic.append(img, tags);
@@ -153,7 +168,7 @@ async function toggleVisible(p) {
 async function removePiece(p) {
   const { error } = await sb.from('products').delete().eq('id', p.id);
   if (error) return toast('No se pudo borrar.', 'err');
-  await removeFiles([p.image_url, p.video_url]);
+  await removeFiles([p.image_url, p.video_url, ...(Array.isArray(p.extra) ? p.extra.map(m => m.url) : [])]);
   toast(`"${p.name}" se borró.`);
   await loadPieces();
 }
@@ -196,6 +211,10 @@ function openEditor(p) {
   $('f-visible').checked = p ? p.visible : true;
   setCategory(p ? p.category : 'ratona');
   $('more').open = !!(p && extra.some(f => p[f]));
+  setFrame(p ? frameOf(p) : { x: 50, y: 50, z: 1 });
+  extras = p && Array.isArray(p.extra) ? p.extra.map(m => ({ type: m.type, url: m.url })) : [];
+  removedExtras = [];
+  renderExtras();
   setPhoto(p ? mediaUrl(p.image_url) : '');
   show('new-btn', false);
   show('editor');
@@ -213,11 +232,96 @@ function setPhoto(src) {
   drop.querySelector('img')?.remove();
   $('drop-ph').hidden = !!src;
   if (src) { const i = el('img'); i.src = src; i.alt = 'Foto elegida'; drop.append(i); }
+  // The framing step shows the same photo inside the card frame
+  $('frame-img').src = src || '';
+  show('frame-step', !!src);
 }
 
 $('f-image').addEventListener('change', () => {
   const f = $('f-image').files[0];
-  if (f) setPhoto(URL.createObjectURL(f));
+  if (f) { setPhoto(URL.createObjectURL(f)); setFrame({ x: 50, y: 50, z: 1 }); }
+});
+
+// ---------- Framing: drag to move, slider / wheel / pinch to zoom ----------
+function setFrame(f) {
+  frame = { x: clamp(f.x, 0, 100), y: clamp(f.y, 0, 100), z: clamp(f.z, 1, 3) };
+  applyFrame($('frame'), frame);
+  $('f-zoom').value = frame.z;
+}
+$('f-zoom').addEventListener('input', () => setFrame({ ...frame, z: Number($('f-zoom').value) }));
+$('frame-reset').addEventListener('click', () => setFrame({ x: 50, y: 50, z: 1 }));
+
+const pointers = new Map();
+let pinchStart = null;
+$('frame').addEventListener('pointerdown', e => {
+  $('frame').setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  $('frame').classList.add('dragging');
+  if (pointers.size === 2) {
+    const [a, b] = [...pointers.values()];
+    pinchStart = { d: Math.hypot(a.x - b.x, a.y - b.y), z: frame.z };
+  }
+});
+$('frame').addEventListener('pointermove', e => {
+  const prev = pointers.get(e.pointerId);
+  if (!prev) return;
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (pointers.size === 2 && pinchStart) {
+    const [a, b] = [...pointers.values()];
+    setFrame({ ...frame, z: pinchStart.z * Math.hypot(a.x - b.x, a.y - b.y) / pinchStart.d });
+    return;
+  }
+  // Moving the photo right shows more of its left side, so the focus point moves the other way
+  const r = $('frame').getBoundingClientRect();
+  setFrame({ ...frame, x: frame.x - (e.clientX - prev.x) / r.width * 100 / frame.z, y: frame.y - (e.clientY - prev.y) / r.height * 100 / frame.z });
+});
+const endDrag = e => {
+  pointers.delete(e.pointerId);
+  if (pointers.size < 2) pinchStart = null;
+  if (!pointers.size) $('frame').classList.remove('dragging');
+};
+$('frame').addEventListener('pointerup', endDrag);
+$('frame').addEventListener('pointercancel', endDrag);
+$('frame').addEventListener('wheel', e => { e.preventDefault(); setFrame({ ...frame, z: frame.z - e.deltaY * 0.002 }); }, { passive: false });
+
+// ---------- More photos / videos ----------
+function renderExtras() {
+  const box = $('extras');
+  box.replaceChildren(...extras.map((m, i) => {
+    const item = el('div', 'xitem');
+    const src = m.preview || mediaUrl(m.url);
+    if (m.type === 'video') {
+      const v = el('video'); v.src = src; v.muted = true; v.playsInline = true; v.preload = 'metadata';
+      item.append(v, el('span', 'xtag', 'Video'));
+    } else {
+      const im = el('img'); im.src = src; im.alt = ''; item.append(im);
+    }
+    const del = el('button', 'xdel', '✕');
+    del.type = 'button';
+    del.setAttribute('aria-label', 'Quitar');
+    del.addEventListener('click', () => {
+      const [gone] = extras.splice(i, 1);
+      if (gone.url) removedExtras.push(gone.url);
+      renderExtras();
+    });
+    item.append(del);
+    return item;
+  }));
+  $('add-extra').hidden = extras.length >= MAX_EXTRAS;
+}
+
+$('f-extra').addEventListener('change', () => {
+  const files = [...$('f-extra').files];
+  $('f-extra').value = '';
+  let skipped = 0;
+  for (const file of files) {
+    if (extras.length >= MAX_EXTRAS) { skipped++; continue; }
+    const isVideo = file.type.startsWith('video/');
+    if (isVideo && file.size > MAX_VIDEO) { skipped++; continue; }
+    extras.push({ type: isVideo ? 'video' : 'image', file, preview: URL.createObjectURL(file) });
+  }
+  renderExtras();
+  if (skipped) fieldError('form-msg', `No se agregaron ${skipped} archivo(s): máximo ${MAX_EXTRAS} por pieza y videos de hasta 25 MB.`);
 });
 $('f-video').addEventListener('change', () => {
   const f = $('f-video').files[0];
@@ -230,14 +334,25 @@ $('piece-form').addEventListener('submit', async e => {
   const imageFile = $('f-image').files[0];
   const videoFile = $('f-video').files[0];
   if (!editing && !imageFile) { fieldError('form-msg', 'Falta la foto (paso 1).'); $('drop').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
-  if (!$('f-name').value.trim()) { fieldError('form-msg', 'Falta el nombre (paso 3).'); $('f-name').focus(); return; }
+  if (!$('f-name').value.trim()) { fieldError('form-msg', 'Falta el nombre (paso 4).'); $('f-name').focus(); return; }
 
   const save = $('save-btn');
   save.disabled = true;
-  save.textContent = imageFile || videoFile ? 'Subiendo…' : 'Guardando…';
+  save.textContent = imageFile || videoFile || extras.some(m => m.file) ? 'Subiendo…' : 'Guardando…';
   try {
-    const row = { name: $('f-name').value.trim(), category, visible: $('f-visible').checked };
+    const row = { name: $('f-name').value.trim(), category, visible: $('f-visible').checked,
+      frame_x: Math.round(frame.x), frame_y: Math.round(frame.y), frame_zoom: Number(frame.z.toFixed(2)) };
     for (const f of extra) row[f] = $('f-' + f).value.trim() || null;
+    // Upload the new extra photos/videos, keeping their order
+    const savedExtras = [];
+    for (const m of extras) {
+      if (!m.file) { savedExtras.push({ type: m.type, url: m.url }); continue; }
+      const url = m.type === 'video'
+        ? await upload(m.file, m.file.type === 'video/quicktime' ? 'mov' : 'mp4', m.file.type === 'video/quicktime' ? 'video/quicktime' : 'video/mp4')
+        : await upload(await shrinkImage(m.file), 'jpg', 'image/jpeg');
+      savedExtras.push({ type: m.type, url });
+    }
+    row.extra = savedExtras;
     if (!editing) row.sort = (pieces.length ? Math.min(...pieces.map(p => p.sort)) : 100) - 10;  // new pieces go first
 
     const oldFiles = [];
@@ -252,7 +367,7 @@ $('piece-form').addEventListener('submit', async e => {
       ? await sb.from('products').update(row).eq('id', editing.id)
       : await sb.from('products').insert(row);
     if (error) throw error;
-    await removeFiles(oldFiles);
+    await removeFiles([...oldFiles, ...removedExtras]);
 
     toast(editing ? `"${row.name}" se actualizó.` : `¡Listo! "${row.name}" ya está en la web.`);
     closeEditor();

@@ -15,7 +15,13 @@ create table if not exists public.products (
   image_url   text check (image_url ~ '^(https://[a-z0-9.-]+\.supabase\.co/|img/)'),
   video_url   text check (video_url ~ '^(https://[a-z0-9.-]+\.supabase\.co/|img/)'),
   sort        int  not null default 100,
-  visible     boolean not null default true
+  visible     boolean not null default true,
+  -- Encuadre en la tarjeta: punto centrado (0-100 %) y zoom (1 a 3)
+  frame_x     smallint not null default 50 check (frame_x between 0 and 100),
+  frame_y     smallint not null default 50 check (frame_y between 0 and 100),
+  frame_zoom  numeric(3,2) not null default 1 check (frame_zoom between 1 and 3),
+  -- Más fotos o videos de la pieza: [{"type":"image"|"video","url":"..."}]
+  extra       jsonb not null default '[]'::jsonb check (jsonb_typeof(extra) = 'array' and jsonb_array_length(extra) <= 12)
 );
 
 -- 2. Quién es administrador ---------------------------------------------------

@@ -30,19 +30,55 @@ function bindPhotos(root = document) {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) root.querySelectorAll('video[autoplay]').forEach(v => { v.removeAttribute('autoplay'); v.pause(); v.controls = true; });
 }
 
-// Lightbox for photos
-const lb = document.getElementById('lb');
-function bindLightbox(root = document) {
-  root.querySelectorAll('.pieza button.ph').forEach(btn => btn.addEventListener('click', () => {
-    if (btn.classList.contains('missing')) return;
-    const img = btn.querySelector('img');
-    lb.querySelector('img').src = img.src;
-    lb.querySelector('img').alt = img.alt;
-    lb.querySelector('p').textContent = btn.closest('.pieza').querySelector('h3').textContent;
-    lb.showModal();
-  }));
+// Every photo and video of a piece, in order: the cover (video if it has one) and then the extras
+function mediaList(p) {
+  const img = safeUrl(p.image_url), video = safeUrl(p.video_url);
+  const list = video ? [{ type: 'video', url: video, poster: img }] : img ? [{ type: 'image', url: img }] : [];
+  for (const m of Array.isArray(p.extra) ? p.extra : []) {
+    const url = safeUrl(m && m.url);
+    if (url && (m.type === 'image' || m.type === 'video')) list.push({ type: m.type, url });
+  }
+  return list;
 }
-lb.addEventListener('click', e => { if (e.target !== lb.querySelector('img')) lb.close(); });
+
+// Gallery: all the photos and videos of one piece
+const lb = document.getElementById('lb');
+const stage = lb.querySelector('.lb-stage');
+let gallery = [], gi = 0, galleryName = '';
+function showGallery() {
+  const m = gallery[gi];
+  stage.querySelector('video')?.pause();
+  if (m.type === 'video') {
+    const v = document.createElement('video');
+    v.src = m.url; if (m.poster) v.poster = m.poster;
+    v.controls = true; v.playsInline = true; v.autoplay = true; v.muted = true; v.loop = true;
+    stage.replaceChildren(v);
+  } else {
+    const i = document.createElement('img');
+    i.src = m.url; i.alt = galleryName;
+    stage.replaceChildren(i);
+  }
+  lb.querySelector('.lb-cap').textContent = gallery.length > 1 ? `${galleryName} · ${gi + 1} de ${gallery.length}` : galleryName;
+  lb.querySelectorAll('.lb-prev, .lb-next').forEach(b => { b.hidden = gallery.length < 2; });
+}
+function openGallery(p) {
+  gallery = mediaList(p);
+  if (!gallery.length) return;
+  gi = 0; galleryName = p.name;
+  showGallery();
+  lb.showModal();
+}
+const step = d => { gi = (gi + d + gallery.length) % gallery.length; showGallery(); };
+lb.querySelector('.lb-prev').addEventListener('click', () => step(-1));
+lb.querySelector('.lb-next').addEventListener('click', () => step(1));
+lb.querySelector('.lb-close').addEventListener('click', () => lb.close());
+lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
+lb.addEventListener('keydown', e => { if (e.key === 'ArrowRight') step(1); else if (e.key === 'ArrowLeft') step(-1); });
+lb.addEventListener('close', () => { stage.querySelector('video')?.pause(); stage.replaceChildren(); });
+// Swipe on phones
+let sx = null;
+stage.addEventListener('pointerdown', e => { sx = e.clientX; });
+stage.addEventListener('pointerup', e => { if (sx !== null && Math.abs(e.clientX - sx) > 50 && gallery.length > 1) step(e.clientX < sx ? 1 : -1); sx = null; });
 
 // Scroll reveal (content stays visible if the observer never fires)
 let io;
@@ -60,14 +96,21 @@ if ('IntersectionObserver' in window) {
 // ---------- Catalog ----------
 const grid = document.getElementById('grid');
 const moreBtn = document.getElementById('ver-mas');
-let filter = 'all', expanded = false;
+let filter = 'all', expanded = false, pieces = [];
 
-function cardHTML(p) {
+// Framing chosen in the panel: focus point (0-100 %) and zoom (1-3)
+const num = (v, lo, hi, d) => { const n = Number(v); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, n)) : d; };
+const frameStyle = p => `--fx:${num(p.frame_x, 0, 100, 50)}%;--fy:${num(p.frame_y, 0, 100, 50)}%;--fz:${num(p.frame_zoom, 1, 3, 1)}`;
+
+function cardHTML(p, i) {
   const img = safeUrl(p.image_url), video = safeUrl(p.video_url);
   const cat = p.category in CATEGORIES ? p.category : 'ratona';
-  const media = video
-    ? `<div class="ph"><video src="${esc(video)}"${img ? ` poster="${esc(img)}"` : ''} muted loop playsinline preload="none" aria-label="Video: ${esc(p.name)}"></video><span class="badge">▶ Video</span></div>`
-    : `<button class="ph" type="button"><img loading="lazy" src="${esc(img)}" alt="${esc(p.name)}"></button>`;
+  const total = mediaList(p).length;
+  const badges = (video ? '<span class="badge">▶ Video</span>' : '') + (total > 1 ? `<span class="count">${total} fotos y videos</span>` : '');
+  const inner = video
+    ? `<video src="${esc(video)}"${img ? ` poster="${esc(img)}"` : ''} muted loop playsinline preload="none" aria-label="Video: ${esc(p.name)}"></video>`
+    : `<img loading="lazy" src="${esc(img)}" alt="${esc(p.name)}">`;
+  const media = `<button class="ph" type="button" data-i="${i}" style="${frameStyle(p)}" aria-label="Ver fotos de ${esc(p.name)}">${inner}${badges}</button>`;
   const specs = [p.wood, p.thickness, p.size, p.detail].filter(Boolean).map(esc).join(' · ');
   return `<article class="pieza reveal" data-cat="${cat}">
     ${media}
@@ -106,8 +149,10 @@ function playVisibleVideos() {
 }
 
 function render(rows) {
+  pieces = rows;
   grid.innerHTML = rows.map(cardHTML).join('');
-  bindWhatsApp(grid); bindPhotos(grid); bindLightbox(grid); bindReveal(grid);
+  grid.querySelectorAll('.ph[data-i]').forEach(b => b.addEventListener('click', () => openGallery(pieces[b.dataset.i])));
+  bindWhatsApp(grid); bindPhotos(grid); bindReveal(grid);
   applyFilter();
 }
 
