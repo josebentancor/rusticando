@@ -16,13 +16,13 @@ Hasta que hagas estos pasos, la web muestra el catálogo fijo y el panel avisa q
 
 ## 3. Crear el usuario del cliente
 
-El cliente entra con un **usuario corto** (por ejemplo `rusticando`). Por detrás, la web lo completa como `rusticando@rusticando.uy` (se cambia en `loginDomain` de `js/config.js`).
+El cliente entra con un **usuario corto** (`admin`). Por detrás, la web lo completa como `admin@rusticando.uy` (se cambia en `loginDomain` de `js/config.js`).
 
-1. **Authentication → Users → Add user → Create new user**: correo `rusticando@rusticando.uy` y una contraseña larga (12+ caracteres, fácil de recordar para el cliente, por ejemplo tres palabras y un número). Marcá **Auto Confirm User**.
+1. **Authentication → Users → Add user → Create new user**: correo `admin@rusticando.uy` y una contraseña larga (12+ caracteres, fácil de recordar para el cliente, por ejemplo tres palabras y un número). Marcá **Auto Confirm User**.
 2. En **SQL Editor**, corré esta línea:
 
    ```sql
-   insert into public.admins (user_id) select id from auth.users where email = 'rusticando@rusticando.uy';
+   insert into public.admins (user_id) select id from auth.users where email = 'admin@rusticando.uy';
    ```
 
 Ese correo no necesita existir de verdad. La contraseña se cambia desde **Authentication → Users** si el cliente se la olvida.
