@@ -83,7 +83,7 @@ input[type=text],input[type=password],input:not([type]){font:400 1.05rem var(--s
 .drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
 .drop .ph{padding:20px;font-weight:700}
 .drop .ph small{display:block;font-weight:400;color:var(--muted);margin-top:6px}
-.drop img{width:100%;max-height:420px;object-fit:contain;display:block;background:#000}
+.drop img,.drop video{width:100%;max-height:420px;object-fit:contain;display:block;background:#000;pointer-events:none}
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
 .tile{padding:16px 10px;border:2px solid var(--ink);border-radius:8px;background:#fff;font:700 1rem var(--sans);cursor:pointer;color:var(--ink)}
 .tile[aria-pressed="true"]{background:var(--ink);color:var(--pine)}
@@ -158,10 +158,10 @@ details.more .full{grid-column:1/-1}
       <h2 id="editor-title">Pieza nueva</h2>
       <form id="piece-form">
         <div class="step">
-          <b><span>1</span>La foto</b>
+          <b><span>1</span>La foto o el video</b>
           <label class="drop" id="drop">
-            <input id="f-image" type="file" accept="image/*" aria-label="Elegir foto">
-            <div class="ph" id="drop-ph">📷 Tocá acá para elegir una foto<small>Desde el celular podés sacarla en el momento</small></div>
+            <input id="f-image" type="file" accept="image/*,video/mp4,video/quicktime" aria-label="Elegir foto o video">
+            <div class="ph" id="drop-ph">📷 Tocá acá para elegir una foto o un video<small>Es lo primero que se ve de la pieza. Videos de hasta 25 MB.</small></div>
           </label>
         </div>
 
@@ -200,10 +200,7 @@ details.more .full{grid-column:1/-1}
             <label class="f">Espesor<input id="f-thickness" maxlength="30" placeholder='Ej.: 2"'>
               <span class="quick" data-for="f-thickness"><button type="button">2"</button><button type="button">3"</button></span></label>
             <label class="f">Detalle<input id="f-detail" maxlength="60" placeholder="Ej.: Borde vivo">
-              <span class="quick" data-for="f-detail"><button type="button">Borde vivo</button><button type="button">Borde recto</button><button type="button">Base de hierro</button><button type="button">En stock</button></span></label>
-            <label class="f full">Video (opcional)<input id="f-video" type="file" accept="video/mp4,video/quicktime">
-              <span class="hint">Hasta 25 MB. Se ve en loop y sin sonido.</span></label>
-          </div>
+              <span class="quick" data-for="f-detail"><button type="button">Borde vivo</button><button type="button">Borde recto</button><button type="button">Base de hierro</button><button type="button">En stock</button></span></label>          </div>
         </details>
 
         <div class="step">

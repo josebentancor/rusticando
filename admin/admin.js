@@ -215,7 +215,9 @@ function openEditor(p) {
   extras = p && Array.isArray(p.extra) ? p.extra.map(m => ({ type: m.type, url: m.url })) : [];
   removedExtras = [];
   renderExtras();
-  setPhoto(p ? mediaUrl(p.image_url) : '');
+  coverPoster = null;
+  if (p && p.video_url) setPhoto(mediaUrl(p.video_url), true, mediaUrl(p.image_url));
+  else setPhoto(p ? mediaUrl(p.image_url) : '');
   show('new-btn', false);
   show('editor');
   $('editor').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -227,19 +229,58 @@ function closeEditor() {
   show('new-btn');
 }
 
-function setPhoto(src) {
+// Main photo or video (step 1). poster: the still used for the framing preview when it is a video
+function setPhoto(src, isVideo = false, poster = '') {
   const drop = $('drop');
-  drop.querySelector('img')?.remove();
+  drop.querySelectorAll('img, video').forEach(n => n.remove());
   $('drop-ph').hidden = !!src;
-  if (src) { const i = el('img'); i.src = src; i.alt = 'Foto elegida'; drop.append(i); }
+  if (src && isVideo) {
+    const v = el('video'); v.src = src; v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true;
+    drop.append(v);
+  } else if (src) { const i = el('img'); i.src = src; i.alt = 'Foto elegida'; drop.append(i); }
   // The framing step shows the same photo inside the card frame
-  $('frame-img').src = src || '';
-  show('frame-step', !!src);
+  $('frame-img').src = (isVideo ? poster : src) || '';
+  show('frame-step', !!(isVideo ? poster : src));
 }
 
-$('f-image').addEventListener('change', () => {
+const isVideoFile = f => f.type.startsWith('video/') || /\.(mov|mp4|m4v)$/i.test(f.name);
+let coverPoster = null;   // still taken from the chosen main video, saved as its photo
+
+// First frame of a video, as a JPEG (the photo shown while the video loads, and in the panel list)
+function videoPoster(file) {
+  return new Promise(resolve => {
+    const v = document.createElement('video');
+    v.muted = true; v.playsInline = true; v.preload = 'auto';
+    const done = blob => { URL.revokeObjectURL(v.src); resolve(blob); };
+    setTimeout(() => done(null), 15000);
+    v.addEventListener('loadeddata', () => { v.currentTime = Math.min(0.5, (v.duration || 1) / 2); }, { once: true });
+    v.addEventListener('seeked', () => {
+      const scale = Math.min(1, 1600 / Math.max(v.videoWidth, v.videoHeight));
+      const c = document.createElement('canvas');
+      c.width = Math.round(v.videoWidth * scale); c.height = Math.round(v.videoHeight * scale);
+      if (!c.width) return done(null);
+      c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+      c.toBlob(b => done(b), 'image/jpeg', 0.85);
+    }, { once: true });
+    v.addEventListener('error', () => done(null), { once: true });
+    v.src = URL.createObjectURL(file);
+  });
+}
+
+$('f-image').addEventListener('change', async () => {
   const f = $('f-image').files[0];
-  if (f) { setPhoto(URL.createObjectURL(f)); setFrame({ x: 50, y: 50, z: 1 }); }
+  coverPoster = null;
+  if (!f) return;
+  fieldError('form-msg', '');
+  setFrame({ x: 50, y: 50, z: 1 });
+  if (!isVideoFile(f)) return setPhoto(URL.createObjectURL(f));
+  if (f.size > MAX_VIDEO) {
+    $('f-image').value = '';
+    return fieldError('form-msg', 'El video pesa más de 25 MB. Recortalo o grabalo en menor calidad (1080p) e intentá de nuevo.');
+  }
+  setPhoto(URL.createObjectURL(f), true);
+  coverPoster = await videoPoster(f);
+  if ($('f-image').files[0] === f) setPhoto(URL.createObjectURL(f), true, coverPoster ? URL.createObjectURL(coverPoster) : '');
 });
 
 // ---------- Framing: drag to move, slider / wheel / pinch to zoom ----------
@@ -323,17 +364,13 @@ $('f-extra').addEventListener('change', () => {
   renderExtras();
   if (skipped) fieldError('form-msg', `No se agregaron ${skipped} archivo(s): máximo ${MAX_EXTRAS} por pieza y videos de hasta 25 MB.`);
 });
-$('f-video').addEventListener('change', () => {
-  const f = $('f-video').files[0];
-  if (f && f.size > MAX_VIDEO) { fieldError('form-msg', 'El video pesa más de 25 MB. Recortalo o mandalo en menor calidad.'); $('f-video').value = ''; }
-});
-
 $('piece-form').addEventListener('submit', async e => {
   e.preventDefault();
   fieldError('form-msg', '');
-  const imageFile = $('f-image').files[0];
-  const videoFile = $('f-video').files[0];
-  if (!editing && !imageFile) { fieldError('form-msg', 'Falta la foto (paso 1).'); $('drop').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+  const cover = $('f-image').files[0];
+  const videoFile = cover && isVideoFile(cover) ? cover : null;
+  const imageFile = videoFile ? coverPoster : cover;
+  if (!editing && !cover) { fieldError('form-msg', 'Falta la foto o el video (paso 1).'); $('drop').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
   if (!$('f-name').value.trim()) { fieldError('form-msg', 'Falta el nombre (paso 4).'); $('f-name').focus(); return; }
 
   const save = $('save-btn');
@@ -356,11 +393,15 @@ $('piece-form').addEventListener('submit', async e => {
     if (!editing) row.sort = (pieces.length ? Math.min(...pieces.map(p => p.sort)) : 100) - 10;  // new pieces go first
 
     const oldFiles = [];
-    if (imageFile) { row.image_url = await upload(await shrinkImage(imageFile), 'jpg', 'image/jpeg'); if (editing) oldFiles.push(editing.image_url); }
-    if (videoFile) {
-      const isMov = videoFile.type === 'video/quicktime';
-      row.video_url = await upload(videoFile, isMov ? 'mov' : 'mp4', isMov ? 'video/quicktime' : 'video/mp4');
-      if (editing) oldFiles.push(editing.video_url);
+    // A new cover replaces both the old photo and the old video
+    if (cover) {
+      if (editing) oldFiles.push(editing.image_url, editing.video_url);
+      row.image_url = imageFile ? await upload(await shrinkImage(imageFile), 'jpg', 'image/jpeg') : null;
+      row.video_url = null;
+      if (videoFile) {
+        const isMov = videoFile.type === 'video/quicktime' || /\.mov$/i.test(videoFile.name);
+        row.video_url = await upload(videoFile, isMov ? 'mov' : 'mp4', isMov ? 'video/quicktime' : 'video/mp4');
+      }
     }
 
     const { error } = editing
