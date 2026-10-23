@@ -6,7 +6,7 @@ create table if not exists public.products (
   id          uuid primary key default gen_random_uuid(),
   created_at  timestamptz not null default now(),
   name        text not null check (char_length(name) between 1 and 80),
-  category    text not null default 'otro' check (category in ('ratona','barra','rack','mesa','otro')),
+  category    text not null default 'ratona' check (category in ('ratona','barra','mesa','rack','tabla','otro')),
   wood        text check (char_length(wood) <= 60),
   thickness   text check (char_length(thickness) <= 30),
   size        text check (char_length(size) <= 40),
@@ -67,20 +67,9 @@ drop policy if exists "admin borra archivos" on storage.objects;
 create policy "admin borra archivos" on storage.objects
   for delete to authenticated using (bucket_id = 'productos' and public.is_admin());
 
--- 5. Piezas actuales (las fotos ya están en la web) ---------------------------
-insert into public.products (name, category, wood, thickness, size, detail, price, image_url, video_url, sort)
-select * from (values
-  ('Ratona pino marítimo',  'ratona', 'Pino marítimo',      null, null,               'Terminación sedosa', '$5.900',      'img/ratona-pino.jpg',   null, 10),
-  ('Ratona ciprés',         'ratona', 'Ciprés',             '2"', '1,30 × 0,85 m',    null,                 'pieza única', 'img/ratona-cipres.jpg', null, 20),
-  ('Ratona cedro azul',     'ratona', 'Cedro azul',         null, null,               'Borde vivo',         'pieza única', 'img/ratona-cedro.jpg',  null, 30),
-  ('Barra base de hierro',  'barra',  'Madera 100% maciza', null, 'A medida',         'Base de hierro',     'a medida',    'img/barra-hierro.jpg',  null, 40),
-  ('Mesada lambertiana',    'barra',  'Ciprés lambertiana', '2"', '2,50 × 0,70 m',    null,                 'a medida',    'img/mesada-lambertiana-poster.jpg', 'img/mesada-lambertiana.mp4', 50),
-  ('Tapa de mesada ciprés', 'barra',  'Ciprés',             '2"', null,               'Mesada · barra',     'a medida',    'img/mesada-cipres.jpg', null, 60),
-  ('Barras pino marítimo',  'barra',  'Pino marítimo',      null, 'A medida',         'Barra · desayunador','a medida',    'img/barras-maritimo.jpg', null, 70),
-  ('Rack TV ciprés',        'rack',   'Ciprés',             '2"', '170 × 35 × 70 cm', null,                 'a medida',    'img/rack-cipres.jpg',   null, 80),
-  ('Mesas de comedor',      'mesa',   null,                 null, null,               'En stock',           'en stock',    'img/mesas-stock.jpg',   null, 90)
-) as v(name, category, wood, thickness, size, detail, price, image_url, video_url, sort)
-where not exists (select 1 from public.products);
+-- 5. Piezas iniciales ----------------------------------------------------------
+-- Correr después supabase/catalogo.sql (se genera con `node supabase/catalogo.mjs`).
+-- Si la tabla ya existía con las categorías viejas, correr antes supabase/cambios-categorias.sql.
 
 -- 6. Último paso, después de crear el usuario del cliente en Authentication > Users:
 --    reemplazar el correo y correr solo esta línea.
